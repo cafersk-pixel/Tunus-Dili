@@ -1,0 +1,1359 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🇹🇳 Tunus Arapçası — Sousse Lehçesi Platformu</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#e94560">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="apple-touch-icon" href="icon.png">
+
+<style>
+/* ===== PREMIUM TASARIM (DARK MODE) ===== */
+:root {
+  --bg: #0a0a12;
+  --card: #16213e;
+  --accent: #e94560;
+  --text: #f5f6fa;
+  --gold: #f0c040;
+  --green: #2ecc71;
+  --blue: #3498db;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color: transparent; }
+
+body {
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  line-height: 1.6;
+}
+
+/* ===== MODERN NAVİGASYON ===== */
+.topbar {
+  background: rgba(10,10,18,0.9);
+  backdrop-filter: blur(15px);
+  border-bottom: 1px solid rgba(233,69,96,0.3);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  display: flex;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.topbar::-webkit-scrollbar { display: none; }
+
+.topbar button {
+  flex: 1;
+  background: transparent;
+  color: #888;
+  border: none;
+  padding: 15px 10px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: 0.3s;
+  border-bottom: 2px solid transparent;
+}
+
+.topbar button.active {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+  background: rgba(233,69,96,0.1);
+}
+
+/* ===== SAYFA DÜZENİ ===== */
+.page { display: none; padding: 20px; max-width: 1200px; margin: auto; animation: fadeIn 0.5s; }
+.page.active { display: block; }
+
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+/* KAPAK */
+.cover { height: 70vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
+.cover h1 { font-size: clamp(32px, 8vw, 52px); color: var(--gold); letter-spacing: 2px; }
+.badge { background: var(--accent); padding: 5px 15px; border-radius: 20px; font-size: 12px; margin-top: 10px; }
+
+/* TABLO STİLİ */
+.search-box { width: 100%; padding: 15px; border-radius: 12px; border: 1px solid #333; background: var(--card); color: white; margin-bottom: 20px; font-size: 16px; }
+.table-wrapper { overflow-x: auto; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+table { width: 100%; border-collapse: collapse; background: var(--card); }
+th { background: #0f3460; color: var(--gold); padding: 15px; text-align: left; }
+td { padding: 12px; border-bottom: 1px solid rgba(255,255,255,0.05); }
+
+/* FLASHCARD */
+.fc-area { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; padding: 20px 0; }
+.fc-card { height: 200px; cursor: pointer; perspective: 1000px; }
+.fc-inner { position: relative; width: 100%; height: 100%; transition: transform 0.6s; transform-style: preserve-3d; border-radius: 20px; }
+.fc-card.flipped .fc-inner { transform: rotateY(180deg); }
+.fc-front, .fc-back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: 20px; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
+.fc-front { background: linear-gradient(135deg, #16213e, #0f3460); border: 1px solid #e94560; }
+.fc-back { background: var(--green); color: white; transform: rotateY(180deg); }
+
+/* SES & QUIZ */
+.panel { background: var(--card); padding: 30px; border-radius: 25px; text-align: center; border: 1px solid rgba(255,255,255,0.1); margin: 20px auto; max-width: 600px; }
+.btn-action { background: var(--accent); color: white; border: none; padding: 15px 30px; border-radius: 50px; font-weight: bold; cursor: pointer; margin: 10px; transition: 0.3s; box-shadow: 0 5px 15px rgba(233,69,96,0.3); }
+.btn-action:hover { transform: scale(1.05); }
+.play-btn { background: #2ecc71; border: none; border-radius: 50%; width: 35px; height: 35px; color: white; cursor: pointer; }
+
+@media (max-width: 600px) { td { font-size: 13px; } }
+</style>
+</head>
+<body>
+
+<nav class="topbar">
+  <button class="active" onclick="showPage('pageCover')">ANA SAYFA</button>
+  <button onclick="showPage('pageDict')">SÖZLÜK (1050)</button>
+  <button onclick="showPage('pageFlash')">KARTLAR</button>
+  <button onclick="showPage('pageQuiz')">PRATİK TEST</button>
+  <button onclick="showPage('pageAudio')">SESLİ EĞİTİM</button>
+  <button onclick="showPage('pageExport')">DOSYA AL</button>
+</nav>
+
+<div class="page active" id="pageCover">
+  <div class="cover">
+    <div style="font-size:100px; margin-bottom: 20px;">🇹🇳</div>
+    <h1>SOUSSE SÖZLÜĞÜ</h1>
+    <div class="badge">PROFESYONEL EĞİTİM SETİ</div>
+    <p style="margin-top:20px; color:#888;">Tunus Arapçası Sahli Lehçesi 1050 Kelime</p>
+    <button class="btn-action" onclick="showPage('pageDict')" style="margin-top:30px;">ŞİMDİ ÖĞRENMEYE BAŞLA</button>
+  </div>
+</div>
+
+<div class="page" id="pageDict">
+  <input type="text" id="searchInput" class="search-box" placeholder="Hızlıca ara (Tunusça, Türkçe veya Okunuş)..." onkeyup="search()">
+  <div class="table-wrapper">
+    <table>
+      <thead>
+        <tr><th>#</th><th>Tunusça</th><th>Anlamı</th><th>Okunuşu</th><th>🔊</th></tr>
+      </thead>
+      <tbody id="dictBody"></tbody>
+    </table>
+  </div>
+</div>
+
+<div class="page" id="pageFlash">
+  <div style="text-align:center;">
+    <h3>Kelime Aralığı Seçin</h3>
+    <input type="number" id="fcS" value="1" min="1" style="padding:10px; border-radius:5px; width:80px"> 
+    <input type="number" id="fcE" value="50" min="1" style="padding:10px; border-radius:5px; width:80px">
+    <button class="btn-action" onclick="makeCards()">KARTLARI HAZIRLA</button>
+  </div>
+  <div class="fc-area" id="fcArea"></div>
+</div>
+
+<div class="page" id="pageQuiz">
+  <div class="panel">
+    <div id="qNum" style="font-size:12px; color:var(--accent);">Soru Hazırlanıyor...</div>
+    <div id="qWord" style="font-size:40px; font-weight:bold; margin:20px 0;">---</div>
+    <input type="text" id="qInp" class="search-box" placeholder="Türkçe karşılığını yazın..." style="text-align:center;">
+    <div id="qFeedback" style="margin-bottom:20px; font-weight:bold;"></div>
+    <button class="btn-action" onclick="checkQ()">KONTROL ET</button>
+    <button class="btn-action" style="background:var(--blue)" onclick="loadQ()">SONRAKİ</button>
+  </div>
+</div>
+
+<div class="page" id="pageAudio">
+  <div class="panel">
+    <h2 style="color:var(--gold)">🎧 Otomatik Dinleme Modu</h2>
+    <p style="margin:15px; font-size:14px; color:#aaa;">Kelimeyi ve anlamını arka arkaya okur.</p>
+    <div id="aDisp" style="font-size:32px; font-weight:bold; height:80px; display:flex; align-items:center; justify-content:center;">...</div>
+    <div id="aMean" style="font-size:20px; color:var(--green); margin-bottom:20px;"></div>
+    <button class="btn-action" onclick="audioPlay()">BAŞLAT</button>
+    <button class="btn-action" style="background:#e74c3c" onclick="audioStop()">DURDUR</button>
+  </div>
+</div>
+
+<div class="page" id="pageExport">
+  <div class="panel">
+    <h2>💾 Kaydet ve Paylaş</h2>
+    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:15px; margin-top:20px;">
+      <button class="btn-action" onclick="window.print()">📜 PDF YAP</button>
+      <button class="btn-action" onclick="dlExcel()" style="background:#27ae60">📊 EXCEL İNDİR</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ===== 1050 KELİME VERİ SETİ (HATASIZ VE EKSİKSİZ) =====
+const K = [
+{n:1,t:"Aslema",y:"Aslema",a:"Merhaba",o:"As-le-ma"},
+{n:2,t:"Bislema",y:"Bislema",a:"Hoşça kal",o:"Bis-le-ma"},
+{n:3,t:"Sbeh el khir",y:"Sbeh el hir",a:"Günaydın",o:"Sbeh el hıyr"},
+{n:4,t:"Mse el khir",y:"Mse el hir",a:"İyi akşamlar",o:"Mse el hıyr"},
+{n:5,t:"Lil sa3ida",y:"Lil saida",a:"İyi geceler",o:"Lil sa-i-da"},
+{n:6,t:"Chnahwelek",y:"Şnahvelek",a:"Nasılsın? (erkek)",o:"Şnah-ve-lek"},
+{n:7,t:"Chnehwelik",y:"Şnahvelik",a:"Nasılsın? (kadın)",o:"Şnah-ve-lik"},
+{n:8,t:"Lebes",y:"Lebes",a:"İyiyim",o:"Le-bes"},
+{n:9,t:"El hamdullah",y:"El hamdullah",a:"Allah'a şükür",o:"El ham-dul-lah"},
+{n:10,t:"3aychek lahi",y:"Ayşek lahi",a:"Teşekkür ederim",o:"Ay-şek la-hi"},
+{n:11,t:"Ya3tik essa7a",y:"Yatik essaha",a:"Sağ ol",o:"Ya-tik es-sa-ha"},
+{n:12,t:"Sm7li",y:"Smahli",a:"Özür dilerim",o:"Smah-li"},
+{n:13,t:"3afak",y:"Afak",a:"Affedersin",o:"A-fek"},
+{n:14,t:"Ey / Na3am",y:"Ey / Naam",a:"Evet",o:"Ey / Na-am"},
+{n:15,t:"Le / Lala",y:"Le / Lala",a:"Hayır",o:"Le / La-la"},
+{n:16,t:"Min fadhlek",y:"Min fadlek",a:"Lütfen (erkek)",o:"Min fad-lek"},
+{n:17,t:"Min fadhlik",y:"Min fadlik",a:"Lütfen (kadın)",o:"Min fad-lik"},
+{n:18,t:"Marhbe bik",y:"Marhbe bik",a:"Hoş geldin (erkek)",o:"Marh-be bik"},
+{n:19,t:"Marhbe bik",y:"Marhbe bik",a:"Hoş geldin (kadın)",o:"Marh-be bik"},
+{n:20,t:"Chkoun enti?",y:"Şkun enti?",a:"Sen kimsin?",o:"Şkun en-ti?"},
+{n:21,t:"Chkoun enti?",y:"Şkun enti?",a:"Sen kimsin?",o:"Şkun en-ti?"},
+{n:22,t:"Chnowa esmek?",y:"Şnuva esmek?",a:"Adın ne? (erkek)",o:"Şnu-va es-mek?"},
+{n:23,t:"Chnowa esmik?",y:"Şnuva esmik?",a:"Adın ne? (kadın)",o:"Şnu-va es-mik?"},
+{n:24,t:"Esmi...",y:"Esmi",a:"Benim adım...",o:"Es-mi"},
+{n:25,t:"Ena men Sousse",y:"Ena men Sus",a:"Ben Sousse'danım",o:"E-na men Sus"},
+{n:26,t:"Ena Turki",y:"Ena Turki",a:"Ben Türk'üm (erkek)",o:"E-na Tur-ki"},
+{n:27,t:"Ena Turkiya",y:"Ena Turkiya",a:"Ben Türk'üm (kadın)",o:"E-na Tur-ki-ya"},
+{n:28,t:"Tkellem 3arbi?",y:"Tkellem arbi?",a:"Arapça konuşuyor musun?",o:"Tkel-lem ar-bi?"},
+{n:29,t:"Ma nefhemch",y:"Ma nefhemş",a:"Anlamıyorum",o:"Ma nef-hemş"},
+{n:30,t:"Fhemt",y:"Fhemt",a:"Anladım",o:"Fhemt"},
+{n:31,t:"3awed",y:"Aved",a:"Tekrar et",o:"A-ved"},
+{n:32,t:"Chwaya chwaya",y:"Şvaya şvaya",a:"Yavaş yavaş",o:"Şva-ya şva-ya"},
+{n:33,t:"Bezzef",y:"Bezzef",a:"Çok",o:"Bez-zef"},
+{n:34,t:"Chwaya",y:"Şvaya",a:"Az / Biraz",o:"Şva-ya"},
+{n:35,t:"Kif kif",y:"Kif kif",a:"Aynı / Fark etmez",o:"Kif kif"},
+{n:36,t:"Yezzi",y:"Yezzi",a:"Yeter",o:"Yez-zi"},
+{n:37,t:"Taw",y:"Tav",a:"Şimdi",o:"Tav"},
+{n:38,t:"Ba3d",y:"Baad",a:"Sonra",o:"Ba-ad"},
+{n:39,t:"Gbel",y:"Gbel",a:"Önce",o:"Gbel"},
+{n:40,t:"Haya",y:"Haya",a:"Haydi",o:"Ha-ya"},
+{n:41,t:"Emchi",y:"Emşi",a:"Git",o:"Em-şi"},
+{n:42,t:"Arwa7",y:"Arvah",a:"Gel",o:"Ar-vah"},
+{n:43,t:"Og3od",y:"Ogod",a:"Otur",o:"Og-od"},
+{n:44,t:"Noudh",y:"Nud",a:"Kalk",o:"Nud"},
+{n:45,t:"Chouf",y:"Şuf",a:"Bak",o:"Şuf"},
+{n:46,t:"Esma3",y:"Esma",a:"Dinle",o:"Es-ma"},
+{n:47,t:"Ahki",y:"Ahki",a:"Konuş",o:"Ah-ki"},
+{n:48,t:"Oskot",y:"Oskot",a:"Sus",o:"Os-kot"},
+{n:49,t:"Stenna",y:"Stenna",a:"Bekle",o:"Sten-na"},
+{n:50,t:"Bara",y:"Bara",a:"Haydi (vurgulu)",o:"Ba-ra"},
+{n:51,t:"Wa7ed",y:"Vahed",a:"1 - Bir",o:"Va-hed"},
+{n:52,t:"Zouz",y:"Zuz",a:"2 - İki",o:"Zuz"},
+{n:53,t:"Tletha",y:"Tletha",a:"3 - Üç",o:"Tlet-ha"},
+{n:54,t:"Arb3a",y:"Arba",a:"4 - Dört",o:"Ar-ba"},
+{n:55,t:"Khamsa",y:"Hamsa",a:"5 - Beş",o:"Ham-sa"},
+{n:56,t:"Setta",y:"Setta",a:"6 - Altı",o:"Set-ta"},
+{n:57,t:"Sab3a",y:"Saba",a:"7 - Yedi",o:"Sa-ba"},
+{n:58,t:"Thmanya",y:"Thmanya",a:"8 - Sekiz",o:"Thman-ya"},
+{n:59,t:"Tes3a",y:"Tesa",a:"9 - Dokuz",o:"Te-sa"},
+{n:60,t:"3achra",y:"Aşra",a:"10 - On",o:"Aş-ra"},
+{n:61,t:"7dech",y:"Hdeş",a:"11",o:"Hdeş"},
+{n:62,t:"Tnech",y:"Tneş",a:"12",o:"Tneş"},
+{n:63,t:"Thlettech",y:"Thletteş",a:"13",o:"Thlet-teş"},
+{n:64,t:"Arba3tech",y:"Arbaateş",a:"14",o:"Arba-teş"},
+{n:65,t:"Khamstech",y:"Hamsteş",a:"15",o:"Hams-teş"},
+{n:66,t:"Settech",y:"Setteş",a:"16",o:"Set-teş"},
+{n:67,t:"Sba3tech",y:"Sbaateş",a:"17",o:"Sba-teş"},
+{n:68,t:"Thmantech",y:"Thmanteş",a:"18",o:"Thman-teş"},
+{n:69,t:"Tsa3tech",y:"Tsaateş",a:"19",o:"Tsa-teş"},
+{n:70,t:"3ichrin",y:"İşrin",a:"20",o:"İş-rin"},
+{n:71,t:"Thlethin",y:"Thlethin",a:"30",o:"Thle-thin"},
+{n:72,t:"Arb3in",y:"Arbin",a:"40",o:"Ar-bin"},
+{n:73,t:"Khamsin",y:"Hamsin",a:"50",o:"Ham-sin"},
+{n:74,t:"Settin",y:"Settin",a:"60",o:"Set-tin"},
+{n:75,t:"Sb3in",y:"Sbin",a:"70",o:"Sbin"},
+{n:76,t:"Thmanin",y:"Thmanin",a:"80",o:"Thma-nin"},
+{n:77,t:"Tes3in",y:"Tesin",a:"90",o:"Te-sin"},
+{n:78,t:"Mya",y:"Mya",a:"100",o:"Mya"},
+{n:79,t:"Alf",y:"Elf",a:"1000",o:"Elf"},
+{n:80,t:"Melyoun",y:"Melyun",a:"Milyon",o:"Mel-yun"},
+{n:81,t:"Ena",y:"Ena",a:"Ben",o:"E-na"},
+{n:82,t:"Enti",y:"Enti",a:"Sen (e)",o:"En-ti"},
+{n:83,t:"Enti",y:"Enti",a:"Sen (k)",o:"En-ti"},
+{n:84,t:"Houwa",y:"Huva",a:"O (e)",o:"Hu-va"},
+{n:85,t:"Hiya",y:"Hiya",a:"O (k)",o:"Hi-ya"},
+{n:86,t:"A7na",y:"Ahna",a:"Biz",o:"Ah-na"},
+{n:87,t:"Entouma",y:"Entuma",a:"Siz",o:"En-tu-ma"},
+{n:88,t:"Houma",y:"Huma",a:"Onlar",o:"Hu-ma"},
+{n:89,t:"Hedha",y:"Hedha",a:"Bu (e)",o:"Hed-ha"},
+{n:90,t:"Hedhi",y:"Hedhi",a:"Bu (k)",o:"Hed-hi"},
+{n:91,t:"Hedheka",y:"Hedheka",a:"Şu (e)",o:"Hed-he-ka"},
+{n:92,t:"Hedhika",y:"Hedhika",a:"Şu (k)",o:"Hed-hi-ka"},
+{n:93,t:"Hedhom",y:"Hedhum",a:"Bunlar / Şunlar",o:"Hed-hum"},
+{n:94,t:"Chnou",y:"Şnu",a:"Ne?",o:"Şnu"},
+{n:95,t:"Chkoun",y:"Şkun",a:"Kim?",o:"Şkun"},
+{n:96,t:"Win",y:"Vin",a:"Nerede?",o:"Vin"},
+{n:97,t:"Waqtech",y:"Vakteş",a:"Ne zaman?",o:"Vak-teş"},
+{n:98,t:"3lech",y:"Aleş",a:"Neden?",o:"A-leş"},
+{n:99,t:"Kifech",y:"Kifeş",a:"Nasıl?",o:"Ki-feş"},
+{n:100,t:"Kadech",y:"Kadeş",a:"Kaç?",o:"Ka-deş"},
+{n:101,t:"Ama",y:"Ama",a:"Ama",o:"A-ma"},
+{n:102,t:"Wella",y:"Vella",a:"Veya",o:"Vel-la"},
+{n:103,t:"W",y:"Ve",a:"Ve",o:"Ve"},
+{n:104,t:"Ki",y:"Ki",a:"Ne zaman",o:"Ki"},
+{n:105,t:"Bech",y:"Beş",a:"İçin",o:"Beş"},
+{n:106,t:"Kima",y:"Kima",a:"Gibi",o:"Ki-ma"},
+{n:107,t:"Barcha",y:"Barşa",a:"Hepsi",o:"Bar-şa"},
+{n:108,t:"7atta",y:"Hatta",a:"Bile",o:"Hat-ta"},
+{n:109,t:"Khater",y:"Hater",a:"Çünkü",o:"Ha-ter"},
+{n:110,t:"Mta3",y:"Mta",a:"-nın / -nin",o:"Mta"},
+{n:111,t:"3ayla",y:"Ayla",a:"Aile",o:"Ay-la"},
+{n:112,t:"Baba",y:"Baba",a:"Baba",o:"Ba-ba"},
+{n:113,t:"Ommi",y:"Ummi",a:"Anne",o:"Um-mi"},
+{n:114,t:"Khouya",y:"Huya",a:"Erkek kardeş",o:"Hu-ya"},
+{n:115,t:"Okhti",y:"Uhti",a:"Kız kardeş",o:"Uh-ti"},
+{n:116,t:"Jeddi",y:"Ceddi",a:"Dede",o:"Ced-di"},
+{n:117,t:"Jeddti",y:"Ceddti",a:"Nine",o:"Cedd-ti"},
+{n:118,t:"3ammi",y:"Ammi",a:"Amca",o:"Am-mi"},
+{n:119,t:"Khali",y:"Hali",a:"Dayı",o:"Ha-li"},
+{n:120,t:"3ammti",y:"Ammti",a:"Hala",o:"Amm-ti"},
+{n:121,t:"Khalti",y:"Halti",a:"Teyze",o:"Hal-ti"},
+{n:122,t:"Weld",y:"Veld",a:"Oğul",o:"Veld"},
+{n:123,t:"Bent",y:"Bent",a:"Kız",o:"Bent"},
+{n:124,t:"Sghayyar",y:"Sgayyar",a:"Çocuk",o:"Sgay-yar"},
+{n:125,t:"Kbir",y:"Kbir",a:"Büyük / Yaşlı",o:"Kbir"},
+{n:126,t:"Rajel",y:"Racel",a:"Adam",o:"Ra-cel"},
+{n:127,t:"Mra",y:"Mra",a:"Kadın",o:"Mra"},
+{n:128,t:"Tfel",y:"Tfel",a:"Erkek çocuk",o:"Tfel"},
+{n:129,t:"Tfal",y:"Tfal",a:"Çocuklar",o:"Tfal"},
+{n:130,t:"Sa7bi",y:"Sahbi",a:"Arkadaşım (e)",o:"Sah-bi"},
+{n:131,t:"Sa7ibti",y:"Sahibti",a:"Arkadaşım (k)",o:"Sa-hib-ti"},
+{n:132,t:"Jar",y:"Car",a:"Komşu",o:"Car"},
+{n:133,t:"Moul",y:"Mul",a:"Sahip",o:"Mul"},
+{n:134,t:"Nas",y:"Nas",a:"İnsanlar",o:"Nas"},
+{n:135,t:"3abd",y:"Abd",a:"Kişi",o:"Abd"},
+{n:136,t:"Mra jdida",y:"Mra cdida",a:"Gelin",o:"Mra cdi-da"},
+{n:137,t:"3aris",y:"Aris",a:"Damat",o:"A-ris"},
+{n:138,t:"3aroussa",y:"Arussa",a:"Gelin",o:"A-rus-sa"},
+{n:139,t:"Zawja",y:"Zavca",a:"Eş (k)",o:"Zav-ca"},
+{n:140,t:"Zawji",y:"Zavci",a:"Eş (e)",o:"Zav-ci"},
+{n:141,t:"Weld 3ammi",y:"Veld ammi",a:"Kuzen (e)",o:"Veld am-mi"},
+{n:142,t:"Bent 3ammti",y:"Bent ammti",a:"Kuzen (k)",o:"Bent amm-ti"},
+{n:143,t:"N7ebb",y:"Nhebb",a:"Seviyorum",o:"Nhebb"},
+{n:144,t:"Nkrah",y:"Nkrah",a:"Nefret ediyorum",o:"Nk-rah"},
+{n:145,t:"3ziz 3liya",y:"Aziz aliya",a:"Canım / Değerlim",o:"A-ziz a-li-ya"},
+{n:146,t:"7abibi",y:"Habibi",a:"Sevgilim",o:"Ha-bi-bi"},
+{n:147,t:"7abibti",y:"Habibti",a:"Bitanem (k)",o:"Ha-bib-ti"},
+{n:148,t:"Walid",y:"Valid",a:"Baba (ebeveyn)",o:"Va-lid"},
+{n:149,t:"Walda",y:"Valda",a:"Anne (ebeveyn)",o:"Val-da"},
+{n:150,t:"Nsib",y:"Nsib",a:"Kayınpeder",o:"Nsib"},
+{n:151,t:"Nsiba",y:"Nsiba",a:"Kayınvalide",o:"Nsi-ba"},
+{n:152,t:"Weld okhti",y:"Veld uhti",a:"Yeğen (e)",o:"Veld uh-ti"},
+{n:153,t:"Bent khouya",y:"Bent huya",a:"Yeğen (k)",o:"Bent hu-ya"},
+{n:154,t:"7ammal",y:"Hammal",a:"Hamile",o:"Ham-mal"},
+{n:155,t:"Mouloud",y:"Mulud",a:"Yeni doğan",o:"Mu-lud"},
+{n:156,t:"Chayeb",y:"Şayeb",a:"Saçı kır adam",o:"Şa-yeb"},
+{n:157,t:"3jouza",y:"Acuza",a:"Yaşlı kadın",o:"A-cu-za"},
+{n:158,t:"Cha3b",y:"Şaab",a:"Halk",o:"Şaab"},
+{n:159,t:"Dhiyouf",y:"Dhiyuf",a:"Misafirler",o:"Dhi-yuf"},
+{n:160,t:"Dhif",y:"Dhif",a:"Misafir",o:"Dhif"},
+{n:161,t:"Ras",y:"Ras",a:"Baş / Kafa",o:"Ras"},
+{n:162,t:"Cha3ar",y:"Şaar",a:"Saç",o:"Şa-ar"},
+{n:163,t:"Wejh",y:"Vech",a:"Yüz",o:"Vech"},
+{n:164,t:"3in",y:"Ayn",a:"Göz",o:"Ayn"},
+{n:165,t:"3inin",y:"Aynin",a:"Gözler",o:"Ay-nin"},
+{n:166,t:"Nif",y:"Nif",a:"Burun",o:"Nif"},
+{n:167,t:"Fomm",y:"Fumm",a:"Ağız",o:"Fumm"},
+{n:168,t:"Lsen",y:"Lsen",a:"Dil",o:"Lsen"},
+{n:169,t:"Senn",y:"Senn",a:"Diş",o:"Senn"},
+{n:170,t:"Snoun",y:"Snun",a:"Dişler",o:"Snun"},
+{n:171,t:"Wedhen",y:"Vedhen",a:"Kulak",o:"Ved-hen"},
+{n:172,t:"Raqba",y:"Rakba",a:"Boyun",o:"Rak-ba"},
+{n:173,t:"Ktef",y:"Ktef",a:"Omuz",o:"Ktef"},
+{n:174,t:"Yedd",y:"Yedd",a:"El",o:"Yedd"},
+{n:175,t:"Ysabi3",y:"Ysabi",a:"Parmaklar",o:"Ysa-bi"},
+{n:176,t:"Sba3",y:"Sba",a:"Parmak",o:"Sba"},
+{n:177,t:"Dhra3",y:"Dhra",a:"Kol",o:"Dhra"},
+{n:178,t:"Kra3",y:"Kra",a:"Ayak / Bacak",o:"Kra"},
+{n:179,t:"Rokba",y:"Rokba",a:"Diz",o:"Rok-ba"},
+{n:180,t:"Dhahar",y:"Dhahar",a:"Sırt",o:"Dha-har"},
+{n:181,t:"Baten",y:"Baten",a:"Karın",o:"Ba-ten"},
+{n:182,t:"Galb",y:"Galb",a:"Kalp",o:"Galb"},
+{n:183,t:"Sadr",y:"Sadr",a:"Göğüs",o:"Sadr"},
+{n:184,t:"Jeld",y:"Celd",a:"Cilt",o:"Celd"},
+{n:185,t:"Demm",y:"Demm",a:"Kan",o:"Demm"},
+{n:186,t:"3adham",y:"Adham",a:"Kemik",o:"Ad-ham"},
+{n:187,t:"Mridh",y:"Mridh",a:"Hasta",o:"Mridh"},
+{n:188,t:"S7i7",y:"Shiih",a:"Sağlıklı / Doğru",o:"Shi-ih"},
+{n:189,t:"Wja3",y:"Vca",a:"Ağrı",o:"Vca"},
+{n:190,t:"Wja3 ras",y:"Vca ras",a:"Baş ağrısı",o:"Vca ras"},
+{n:191,t:"Wja3 baten",y:"Vca baten",a:"Karın ağrısı",o:"Vca ba-ten"},
+{n:192,t:"S5ana",y:"Shana",a:"Ateş",o:"Sha-na"},
+{n:193,t:"Bard",y:"Bard",a:"Soğuk algınlığı",o:"Bard"},
+{n:194,t:"Ko77a",y:"Kuhha",a:"Öksürük",o:"Kuh-ha"},
+{n:195,t:"3otsa",y:"Otsa",a:"Hapşırık",o:"Ot-sa"},
+{n:196,t:"Tbib",y:"Tbib",a:"Doktor",o:"Tbib"},
+{n:197,t:"Sbitar",y:"Sbitar",a:"Hastane",o:"Sbi-tar"},
+{n:198,t:"Pharmacie",y:"Farmasya",a:"Eczane",o:"Far-mas-ya"},
+{n:199,t:"Dwa",y:"Dva",a:"İlaç",o:"Dva"},
+{n:200,t:"7oqna",y:"Hokna",a:"İğne",o:"Hok-na"},
+{n:201,t:"3amaliya",y:"Amaliya",a:"Ameliyat",o:"A-ma-li-ya"},
+{n:202,t:"Jor7",y:"Corh",a:"Yara",o:"Corh"},
+{n:203,t:"Fasakh",y:"Fasah",a:"Burkulma",o:"Fa-sah"},
+{n:204,t:"Dhabba",y:"Dhabba",a:"Şişlik",o:"Dhab-ba"},
+{n:205,t:"Ta3ben",y:"Taaben",a:"Yorgunum",o:"Ta-ben"},
+{n:206,t:"Fay9",y:"Fayk",a:"Uyanık",o:"Fayk"},
+{n:207,t:"Raqed",y:"Raked",a:"Uyuyan",o:"Ra-ked"},
+{n:208,t:"Na3es",y:"Naes",a:"Uykum var",o:"Na-es"},
+{n:209,t:"Jou3an",y:"Cuaan",a:"Açım",o:"Cu-an"},
+{n:210,t:"3atchan",y:"Atşan",a:"Susadım",o:"At-şan"},
+{n:211,t:"Mekla",y:"Mekla",a:"Yemek",o:"Mek-la"},
+{n:212,t:"Khobz",y:"Hobz",a:"Ekmek",o:"Hobz"},
+{n:213,t:"Ma",y:"Ma",a:"Su",o:"Ma"},
+{n:214,t:"7lib",y:"Hlib",a:"Süt",o:"Hlib"},
+{n:215,t:"Qahwa",y:"Kahva",a:"Kahve",o:"Kah-va"},
+{n:216,t:"Tey",y:"Tey",a:"Çay",o:"Tey"},
+{n:217,t:"Tey binna3na3",y:"Tey binnaana",a:"Naneli çay",o:"Tey bin-na-na"},
+{n:218,t:"3assir",y:"Assir",a:"Meyve suyu",o:"As-sir"},
+{n:219,t:"La7m",y:"Lahm",a:"Et",o:"Lahm"},
+{n:220,t:"Djej",y:"Dcec",a:"Tavuk",o:"Dcec"},
+{n:221,t:"7out",y:"Hut",a:"Balık",o:"Hut"},
+{n:222,t:"Bayedh",y:"Baydh",a:"Yumurta",o:"Baydh"},
+{n:223,t:"Rouz",y:"Ruz",a:"Pilav",o:"Ruz"},
+{n:224,t:"Makarona",y:"Makarona",a:"Makarna",o:"Ma-ka-ro-na"},
+{n:225,t:"Kosksi",y:"Kosksi",a:"Kuskus",o:"Kos-ksi"},
+{n:226,t:"Salata",y:"Salata",a:"Salata",o:"Sa-la-ta"},
+{n:227,t:"Chorba",y:"Şorba",a:"Çorba",o:"Şor-ba"},
+{n:228,t:"Tbikha",y:"Tbikha",a:"Sulu yemek",o:"Tbik-ha"},
+{n:229,t:"Tajin",y:"Tacin",a:"Fırın yemeği",o:"Ta-cin"},
+{n:230,t:"Brik",y:"Brik",a:"Börek",o:"Brik"},
+{n:231,t:"Harissa",y:"Harissa",a:"Acı sos",o:"Ha-ris-sa"},
+{n:232,t:"Zit",y:"Zit",a:"Zeytinyağı",o:"Zit"},
+{n:233,t:"Zitoun",y:"Zitun",a:"Zeytin",o:"Zi-tun"},
+{n:234,t:"Mel7",y:"Melh",a:"Tuz",o:"Melh"},
+{n:235,t:"Ibzar",y:"İbzar",a:"Karabiber",o:"İb-zar"},
+{n:236,t:"Sokkar",y:"Sokkar",a:"Şeker",o:"Sok-kar"},
+{n:237,t:"Fromage",y:"Fromac",a:"Peynir",o:"Fro-mac"},
+{n:238,t:"Zebda",y:"Zebda",a:"Tereyağı",o:"Zeb-da"},
+{n:239,t:"Toum",y:"Tum",a:"Sarımsak",o:"Tum"},
+{n:240,t:"Bsal",y:"Bsal",a:"Soğan",o:"Bsal"},
+{n:241,t:"Tomatem",y:"Tomatem",a:"Domates",o:"To-ma-tem"},
+{n:242,t:"Felfel",y:"Felfel",a:"Biber",o:"Fel-fel"},
+{n:243,t:"Batata",y:"Batata",a:"Patates",o:"Ba-ta-ta"},
+{n:244,t:"Khodhra",y:"Hodhra",a:"Sebze",o:"Hod-hra"},
+{n:245,t:"Ghal",y:"Gal",a:"Meyve",o:"Gal"},
+{n:246,t:"Tfe7",y:"Tfeh",a:"Elma",o:"Tfeh"},
+{n:247,t:"Lim",y:"Lim",a:"Limon",o:"Lim"},
+{n:248,t:"Dlegue",y:"Dleg",a:"Karpuz",o:"Dleg"},
+{n:249,t:"Lkhoukh",y:"Lhuh",a:"Şeftali",o:"Lhuh"},
+{n:250,t:"Bnena",y:"Bnena",a:"Muz",o:"Bne-na"},
+{n:251,t:"3ineb",y:"İneb",a:"Üzüm",o:"İ-neb"},
+{n:252,t:"Tiin",y:"Tin",a:"İncir",o:"Tin"},
+{n:253,t:"Karmous",y:"Karmus",a:"Taze incir",o:"Kar-mus"},
+{n:254,t:"Bortoqal",y:"Bortokal",a:"Portakal",o:"Bor-to-kal"},
+{n:255,t:"Mandarin",y:"Mandarin",a:"Mandalina",o:"Man-da-rin"},
+{n:256,t:"Jben",y:"Cben",a:"Taze peynir",o:"Cben"},
+{n:257,t:"3sel",y:"Asel",a:"Bal",o:"A-sel"},
+{n:258,t:"Konfitir",y:"Konfitir",a:"Reçel",o:"Kon-fi-tir"},
+{n:259,t:"7ams",y:"Hams",a:"Nohut",o:"Hams"},
+{n:260,t:"Loubia",y:"Lubya",a:"Fasulye",o:"Lub-ya"},
+{n:261,t:"3des",y:"Ades",a:"Mercimek",o:"A-des"},
+{n:262,t:"Zaatar",y:"Zaatar",a:"Kekik",o:"Za-tar"},
+{n:263,t:"Kamoun",y:"Kamun",a:"Kimyon",o:"Ka-mun"},
+{n:264,t:"Kerfes",y:"Kerfes",a:"Kereviz",o:"Ker-fes"},
+{n:265,t:"Khyar",y:"Hyar",a:"Salatalık",o:"Hyar"},
+{n:266,t:"Karnoun",y:"Karnun",a:"Enginar",o:"Kar-nun"},
+{n:267,t:"Bsissa",y:"Bsissa",a:"Yöresel içecek",o:"Bsis-sa"},
+{n:268,t:"Lablebi",y:"Lablebi",a:"Leblebi yemeği",o:"Lab-le-bi"},
+{n:269,t:"Fricasse",y:"Frikase",a:"Küçük sandviç",o:"Fri-ka-se"},
+{n:270,t:"Chapati",y:"Şapati",a:"Gözleme tipi",o:"Şa-pa-ti"},
+{n:271,t:"Mloukhiya",y:"Mhluhiya",a:"Mulukiye",o:"Mlu-hi-ya"},
+{n:272,t:"Meshwi",y:"Meşvi",a:"Izgara",o:"Meş-vi"},
+{n:273,t:"Mekli",y:"Mekli",a:"Kızarmış",o:"Mek-li"},
+{n:274,t:"Matbou5",y:"Matbuh",a:"Pişmiş",o:"Mat-buh"},
+{n:275,t:"Ney",y:"Ney",a:"Çiğ",o:"Ney"},
+{n:276,t:"S5oun",y:"Shun",a:"Sıcak",o:"Shun"},
+{n:277,t:"Bared",y:"Bared",a:"Soğuk",o:"Ba-red"},
+{n:278,t:"7lou",y:"Hlu",a:"Tatlı",o:"Hlu"},
+{n:279,t:"Morr",y:"Morr",a:"Acı (tat)",o:"Morr"},
+{n:280,t:"Male7",y:"Maleh",a:"Tuzlu",o:"Ma-leh"},
+{n:281,t:"7arr",y:"Harr",a:"Baharatlı",o:"Harr"},
+{n:282,t:"Bnin",y:"Bnin",a:"Lezzetli",o:"Bnin"},
+{n:283,t:"Ma bnin ch",y:"Ma bnin ş",a:"Lezzetli değil",o:"Ma bnin ş"},
+{n:284,t:"Kas",y:"Kas",a:"Bardak",o:"Kas"},
+{n:285,t:"Kas3a",y:"Kasa",a:"Kâse",o:"Ka-sa"},
+{n:286,t:"Tabsi",y:"Tabsi",a:"Tabak",o:"Tab-si"},
+{n:287,t:"Fourchita",y:"Furşita",a:"Çatal",o:"Fur-şi-ta"},
+{n:288,t:"Mouss",y:"Mus",a:"Bıçak",o:"Mus"},
+{n:289,t:"Ma3lga",y:"Malga",a:"Kaşık",o:"Mal-ga"},
+{n:290,t:"Servietta",y:"Serviyetta",a:"Peçete",o:"Ser-vi-yet-ta"},
+{n:291,t:"Menu",y:"Menü",a:"Menü",o:"Me-nü"},
+{n:292,t:"El 7seb",y:"El hseb",a:"Hesap",o:"El hseb"},
+{n:293,t:"Pourboire",y:"Purbvar",a:"Bahşiş",o:"Pur-bvar"},
+{n:294,t:"Restaurant",y:"Restoran",a:"Restoran",o:"Res-to-ran"},
+{n:295,t:"Café",y:"Kafe",a:"Kafe / Kahvehane",o:"Ka-fe"},
+{n:296,t:"3andi jou3",y:"Andi cu",a:"Açım",o:"An-di cu"},
+{n:297,t:"3andi 3atech",y:"Andi ateş",a:"Susadım",o:"An-di a-teş"},
+{n:298,t:"N7ebb nekol",y:"Nhebb nekul",a:"Yemek istiyorum",o:"Nhebb ne-kul"},
+{n:299,t:"N7ebb nechreb",y:"Nhebb neşreb",a:"İçmek istiyorum",o:"Nhebb neş-reb"},
+{n:300,t:"Zidni",y:"Zidni",a:"Daha ver",o:"Zid-ni"},
+{n:301,t:"Dar",y:"Dar",a:"Ev",o:"Dar"},
+{n:302,t:"Bit",y:"Bit",a:"Oda",o:"Bit"},
+{n:303,t:"Bit ennawm",y:"Bit ennawm",a:"Yatak odası",o:"Bit en-navm"},
+{n:304,t:"Kouzina",y:"Kuzina",a:"Mutfak",o:"Ku-zi-na"},
+{n:305,t:"Bit el ma",y:"Bit el ma",a:"Banyo",o:"Bit el ma"},
+{n:306,t:"Salon",y:"Salon",a:"Salon",o:"Sa-lon"},
+{n:307,t:"Sath",y:"Sath",a:"Çatı",o:"Sath"},
+{n:308,t:"Beb",y:"Beb",a:"Kapı",o:"Beb"},
+{n:309,t:"Chebek",y:"Şebek",a:"Pencere",o:"Şe-bek"},
+{n:310,t:"7it",y:"Hit",a:"Duvar",o:"Hit"},
+{n:311,t:"Ardh",y:"Ardh",a:"Zemin",o:"Ardh"},
+{n:312,t:"Sqaf",y:"Skaf",a:"Tavan",o:"Skaf"},
+{n:313,t:"Sellom",y:"Sellum",a:"Merdiven",o:"Sel-lum"},
+{n:314,t:"Korsi",y:"Korsi",a:"Sandalye",o:"Kor-si"},
+{n:315,t:"Tawla",y:"Tavla",a:"Masa",o:"Tav-la"},
+{n:316,t:"Ferch",y:"Ferş",a:"Yatak",o:"Ferş"},
+{n:317,t:"Mkhadda",y:"Mhadda",a:"Yastık",o:"Mhad-da"},
+{n:318,t:"Ghtiya",y:"Ghtiya",a:"Battaniye",o:"Ghti-ya"},
+{n:319,t:"Miraya",y:"Miraya",a:"Ayna",o:"Mi-ra-ya"},
+{n:320,t:"Armoir",y:"Armvar",a:"Dolap",o:"Arm-var"},
+{n:321,t:"Talvza",y:"Talvza",a:"Televizyon",o:"Tal-vza"},
+{n:322,t:"Thalleja",y:"Thalleca",a:"Buzdolabı",o:"Thal-le-ca"},
+{n:323,t:"Fourno",y:"Furno",a:"Fırın",o:"Fur-no"},
+{n:324,t:"Ghasela",y:"Gasela",a:"Çamaşır makinesi",o:"Ga-se-la"},
+{n:325,t:"Klimatisour",y:"Klimatisur",a:"Klima",o:"Kli-ma-ti-sur"},
+{n:326,t:"Dhou",y:"Dhu",a:"Işık",o:"Dhu"},
+{n:327,t:"Lamba",y:"Lamba",a:"Lamba",o:"Lam-ba"},
+{n:328,t:"Mifta7",y:"Miftah",a:"Anahtar",o:"Mif-tah"},
+{n:329,t:"Sarir",y:"Sarir",a:"Karyola",o:"Sa-rir"},
+{n:330,t:"Zanqa",y:"Zanka",a:"Sokak",o:"Zan-ka"},
+{n:331,t:"Triq",y:"Trik",a:"Yol",o:"Trik"},
+{n:332,t:"7ouma",y:"Huma",a:"Mahalle",o:"Hu-ma"},
+{n:333,t:"Mdina",y:"Mdina",a:"Şehir",o:"Mdi-na"},
+{n:334,t:"Blad",y:"Blad",a:"Ülke",o:"Blad"},
+{n:335,t:"Souq",y:"Suk",a:"Çarşı",o:"Suk"},
+{n:336,t:"7anout",y:"Hanut",a:"Dükkân",o:"Ha-nut"},
+{n:337,t:"Jema3",y:"Cemaa",a:"Cami",o:"Ce-maa"},
+{n:338,t:"Madrsa",y:"Madrsa",a:"Okul",o:"Mad-rsa"},
+{n:339,t:"Jemla",y:"Cemla",a:"Toptan",o:"Cem-la"},
+{n:340,t:"Karhba",y:"Karhba",a:"Araba",o:"Karh-ba"},
+{n:341,t:"Bus",y:"Bus",a:"Otobüs",o:"Bus"},
+{n:342,t:"Taxi",y:"Taksi",a:"Taksi",o:"Tak-si"},
+{n:343,t:"Gare",y:"Gar",a:"İstasyon",o:"Gar"},
+{n:344,t:"Port",y:"Port",a:"Liman",o:"Port"},
+{n:345,t:"Matar",y:"Matar",a:"Havaalanı",o:"Ma-tar"},
+{n:346,t:"Plage",y:"Plaj",a:"Sahil",o:"Plaj"},
+{n:347,t:"B7ar",y:"Bhar",a:"Deniz",o:"Bhar"},
+{n:348,t:"Jbel",y:"Cbel",a:"Dağ",o:"Cbel"},
+{n:349,t:"Ghabba",y:"Gabba",a:"Orman",o:"Gab-ba"},
+{n:350,t:"Jnina",y:"Cnina",a:"Bahçe",o:"Cni-na"},
+{n:351,t:"7weyej",y:"Hveyec",a:"Kıyafetler",o:"Hve-yec"},
+{n:352,t:"Qmija",y:"Kmica",a:"Gömlek",o:"Kmi-ca"},
+{n:353,t:"Serwel",y:"Servel",a:"Pantolon",o:"Ser-vel"},
+{n:354,t:"Trikou",y:"Triku",a:"Tişört",o:"Tri-ku"},
+{n:355,t:"Jebba",y:"Cebba",a:"Yöresel elbise",o:"Ceb-ba"},
+{n:356,t:"Veste",y:"Vest",a:"Yelek",o:"Vest"},
+{n:357,t:"Manteau",y:"Manto",a:"Palto",o:"Man-to"},
+{n:358,t:"Sabbat",y:"Sabbat",a:"Ayakkabı",o:"Sab-bat"},
+{n:359,t:"Sanda",y:"Sanda",a:"Sandalet",o:"San-da"},
+{n:360,t:"Cheshya",y:"Şeşya",a:"Şapka",o:"Şeş-ya"},
+{n:361,t:"Cravat",y:"Kravat",a:"Kravat",o:"Kra-vat"},
+{n:362,t:"Jakett",y:"Cakett",a:"Ceket",o:"Ca-kett"},
+{n:363,t:"Rob",y:"Rob",a:"Elbise",o:"Rob"},
+{n:364,t:"Jupe",y:"Jüp",a:"Etek",o:"Jüp"},
+{n:365,t:"7zem",y:"Hzem",a:"Kemer",o:"Hzem"},
+{n:366,t:"Charet",y:"Şaret",a:"Çorap",o:"Şa-ret"},
+{n:367,t:"Slip",y:"Slip",a:"İç çamaşırı",o:"Slip"},
+{n:368,t:"Kaskita",y:"Kaskita",a:"Kasket",o:"Kas-ki-ta"},
+{n:369,t:"3oqda",y:"Okda",a:"Düğüm",o:"Ok-da"},
+{n:370,t:"Bouton",y:"Buton",a:"Düğme",o:"Bu-ton"},
+{n:371,t:"Jib",y:"Cib",a:"Cep",o:"Cib"},
+{n:372,t:"Sa3a",y:"Saa",a:"Saat",o:"Saa"},
+{n:373,t:"Khatem",y:"Hatem",a:"Yüzük",o:"Ha-tem"},
+{n:374,t:"Sinsla",y:"Sinsla",a:"Kolye",o:"Sins-la"},
+{n:375,t:"7alq",y:"Halk",a:"Küpe",o:"Halk"},
+{n:376,t:"Sabna7",y:"Sabnah",a:"Bilezik",o:"Sab-nah"},
+{n:377,t:"Ndhadhir",y:"Ndhadhir",a:"Gözlük",o:"Ndha-dhir"},
+{n:378,t:"Chamsiya",y:"Şamsiya",a:"Şemsiye",o:"Şam-si-ya"},
+{n:379,t:"Sek",y:"Sek",a:"Çanta",o:"Sek"},
+{n:380,t:"Valise",y:"Valiz",a:"Bavul",o:"Va-liz"},
+{n:381,t:"Gassal",y:"Gassal",a:"Yıkamak",o:"Gas-sal"},
+{n:382,t:"Necher",y:"Neşer",a:"Kurutmak",o:"Ne-şer"},
+{n:383,t:"Kwa",y:"Kva",a:"Ütülemek",o:"Kva"},
+{n:384,t:"Lbes",y:"Lbes",a:"Giymek",o:"Lbes"},
+{n:385,t:"7all",y:"Hall",a:"Çıkarmak",o:"Hall"},
+{n:386,t:"Chra",y:"Şra",a:"Satın almak",o:"Şra"},
+{n:387,t:"Be3",y:"Bea",a:"Satmak",o:"Bea"},
+{n:388,t:"Ghalya",y:"Galya",a:"Pahalı",o:"Gal-ya"},
+{n:389,t:"Rkhis",y:"Rhis",a:"Ucuz",o:"Rhis"},
+{n:390,t:"Na99es",y:"Nakkes",a:"İndirim yap",o:"Nak-kes"},
+{n:391,t:"Lon",y:"Lon",a:"Renk",o:"Lon"},
+{n:392,t:"A7mar",y:"Ahmar",a:"Kırmızı",o:"Ah-mar"},
+{n:393,t:"Azraq",y:"Azrak",a:"Mavi",o:"Az-rak"},
+{n:394,t:"Akhdar",y:"Ahdar",a:"Yeşil",o:"Ah-dar"},
+{n:395,t:"Asfar",y:"Asfar",a:"Sarı",o:"As-far"},
+{n:396,t:"Abyadh",y:"Abyadh",a:"Beyaz",o:"Ab-yadh"},
+{n:397,t:"Akhal",y:"Akhal",a:"Siyah",o:"Ak-hal"},
+{n:398,t:"Banni",y:"Banni",a:"Kahverengi",o:"Ban-ni"},
+{n:399,t:"Remadi",y:"Remadi",a:"Gri",o:"Re-ma-di"},
+{n:400,t:"Bortoqali",y:"Bortokali",a:"Turuncu",o:"Bor-to-ka-li"},
+{n:401,t:"Mov",y:"Mov",a:"Mor",o:"Mov"},
+{n:402,t:"Wardi",y:"Vardi",a:"Pembe",o:"Var-di"},
+{n:403,t:"Dhahbi",y:"Dhahbi",a:"Altın rengi",o:"Dhah-bi"},
+{n:404,t:"Fathe7",y:"Fateh",a:"Açık renk",o:"Fa-teh"},
+{n:405,t:"Ghamiq",y:"Gamik",a:"Koyu renk",o:"Ga-mik"},
+{n:406,t:"Waqt",y:"Vakt",a:"Zaman",o:"Vakt"},
+{n:407,t:"Tawa",y:"Tava",a:"Şimdi",o:"Ta-va"},
+{n:408,t:"Lyoum",y:"Lyum",a:"Bugün",o:"Lyum"},
+{n:409,t:"Ams",y:"Ams",a:"Dün",o:"Ams"},
+{n:410,t:"Ghodwa",y:"Ghodva",a:"Yarın",o:"Ghod-va"},
+{n:411,t:"Ba3d ghodwa",y:"Baad ghodva",a:"Öbür gün",o:"Baad ghod-va"},
+{n:412,t:"Awwel ams",y:"Avvel ams",a:"Evvelsi gün",o:"Av-vel ams"},
+{n:413,t:"Nhaar",y:"Nhar",a:"Gün",o:"Nhar"},
+{n:414,t:"Lil",y:"Lil",a:"Gece",o:"Lil"},
+{n:415,t:"Sbe7",y:"Sbeh",a:"Sabah",o:"Sbeh"},
+{n:416,t:"Tanhara",y:"Tanhara",a:"Öğle",o:"Tan-ha-ra"},
+{n:417,t:"3achiya",y:"Aşiya",a:"Akşam",o:"A-şi-ya"},
+{n:418,t:"Se3a",y:"Sea",a:"Saat",o:"Sea"},
+{n:419,t:"Dqiqa",y:"Dkika",a:"Dakika",o:"Dki-ka"},
+{n:420,t:"Thenya",y:"Thenya",a:"Saniye",o:"Then-ya"},
+{n:421,t:"Nhar lethnin",y:"Nhar lethnin",a:"Pazartesi",o:"Nhar leth-nin"},
+{n:422,t:"Nhar thletha",y:"Nhar thletha",a:"Salı",o:"Nhar thle-tha"},
+{n:423,t:"Nhar larb3a",y:"Nhar larba",a:"Çarşamba",o:"Nhar lar-ba"},
+{n:424,t:"Nhar lkhmis",y:"Nhar lhmis",a:"Perşembe",o:"Nhar lh-mis"},
+{n:425,t:"Nhar ljom3a",y:"Nhar lcomaa",a:"Cuma",o:"Nhar lco-maa"},
+{n:426,t:"Nhar sebt",y:"Nhar sebt",a:"Cumartesi",o:"Nhar sebt"},
+{n:427,t:"Nhar l7ad",y:"Nhar lhad",a:"Pazar",o:"Nhar lhad"},
+{n:428,t:"Jom3a",y:"Comaa",a:"Hafta",o:"Co-maa"},
+{n:429,t:"Chahar",y:"Şahar",a:"Ay",o:"Şa-har"},
+{n:430,t:"3am",y:"Am",a:"Yıl",o:"Am"},
+{n:431,t:"Janvi",y:"Canvi",a:"Ocak",o:"Can-vi"},
+{n:432,t:"Fevri",y:"Fevri",a:"Şubat",o:"Fev-ri"},
+{n:433,t:"Mars",y:"Mars",a:"Mart",o:"Mars"},
+{n:434,t:"Avril",y:"Avril",a:"Nisan",o:"Av-ril"},
+{n:435,t:"Me",y:"Me",a:"Mayıs",o:"Me"},
+{n:436,t:"Jwan",y:"Cvan",a:"Haziran",o:"Cvan"},
+{n:437,t:"Jwilya",y:"Cvilya",a:"Temmuz",o:"Cvil-ya"},
+{n:438,t:"Out",y:"Ut",a:"Ağustos",o:"Ut"},
+{n:439,t:"Septembr",y:"Septembr",a:"Eylül",o:"Sep-tembr"},
+{n:440,t:"Oktobr",y:"Oktobr",a:"Ekim",o:"Ok-tobr"},
+{n:441,t:"Novembr",y:"Novembr",a:"Kasım",o:"No-vembr"},
+{n:442,t:"Desembr",y:"Desembr",a:"Aralık",o:"De-sembr"},
+{n:443,t:"Ssif",y:"Ssif",a:"Yaz",o:"Ssif"},
+{n:444,t:"Chtwa",y:"Ştva",a:"Kış",o:"Ştva"},
+{n:445,t:"Rbi3",y:"Rbi",a:"İlkbahar",o:"Rbi"},
+{n:446,t:"Khrif",y:"Hrif",a:"Sonbahar",o:"Hrif"},
+{n:447,t:"Marra",y:"Marra",a:"Defa",o:"Mar-ra"},
+{n:448,t:"Dima",y:"Dima",a:"Her zaman",o:"Di-ma"},
+{n:449,t:"Abadan",y:"Abadan",a:"Asla",o:"A-ba-dan"},
+{n:450,t:"Sa3at",y:"Saat",a:"Bazen",o:"Sa-at"},
+{n:451,t:"Nekol",y:"Nekul",a:"Yemek yemek",o:"Ne-kul"},
+{n:452,t:"Nechreb",y:"Neşreb",a:"İçmek",o:"Neş-reb"},
+{n:453,t:"Nor9od",y:"Norkod",a:"Uyumak",o:"Nor-kod"},
+{n:454,t:"Noukhroj",y:"Nuhroc",a:"Çıkmak",o:"Nuh-roc"},
+{n:455,t:"Nodkhol",y:"Nodhol",a:"Girmek",o:"Nod-hol"},
+{n:456,t:"Nemchi",y:"Nemşi",a:"Gitmek",o:"Nem-şi"},
+{n:457,t:"Nji",y:"Nci",a:"Gelmek",o:"Nci"},
+{n:458,t:"Nohrej",y:"Nohrec",a:"Koşmak",o:"Noh-rec"},
+{n:459,t:"Nekteb",y:"Nekteb",a:"Yazmak",o:"Nek-teb"},
+{n:460,t:"Naqra",y:"Nakra",a:"Okumak",o:"Nak-ra"},
+{n:461,t:"Na3ref",y:"Naaref",a:"Bilmek",o:"Na-ref"},
+{n:462,t:"Nefhem",y:"Nefhem",a:"Anlamak",o:"Nef-hem"},
+{n:463,t:"Net3alm",y:"Netalem",a:"Öğrenmek",o:"Ne-ta-lem"},
+{n:464,t:"N3allem",y:"Naallem",a:"Öğretmek",o:"Naal-lem"},
+{n:465,t:"Nahki",y:"Nahki",a:"Konuşmak",o:"Nah-ki"},
+{n:466,t:"Nesma3",y:"Nesma",a:"Dinlemek",o:"Nes-ma"},
+{n:467,t:"Nchouf",y:"Nşuf",a:"Görmek",o:"Nşuf"},
+{n:468,t:"Na3mel",y:"Naamel",a:"Yapmak",o:"Na-mel"},
+{n:469,t:"Nkhedhem",y:"Nhedhem",a:"Çalışmak",o:"Nhed-hem"},
+{n:470,t:"Nel3ab",y:"Nelab",a:"Oynamak",o:"Ne-lab"},
+{n:471,t:"N7ebb",y:"Nhebb",a:"Sevmek",o:"Nhebb"},
+{n:472,t:"Nebda",y:"Nebda",a:"Başlamak",o:"Neb-da"},
+{n:473,t:"Nkammel",y:"Nkammel",a:"Bitirmek",o:"Nkam-mel"},
+{n:474,t:"Nefta7",y:"Neftah",a:"Açmak",o:"Nef-tah"},
+{n:475,t:"Nsakker",y:"Nsakker",a:"Kapatmak",o:"Nsak-ker"},
+{n:476,t:"Na3ti",y:"Naati",a:"Vermek",o:"Na-ti"},
+{n:477,t:"Nekhoudh",y:"Nehudh",a:"Almak",o:"Ne-hudh"},
+{n:478,t:"Nechri",y:"Neşri",a:"Satın almak",o:"Neş-ri"},
+{n:479,t:"Nbi3",y:"Nbi",a:"Satmak",o:"Nbi"},
+{n:480,t:"Nkhallas",y:"Nhallas",a:"Ödemek",o:"Nhal-las"},
+{n:481,t:"Ndouwer",y:"Nduver",a:"Aramak",o:"Ndu-ver"},
+{n:482,t:"Nlqa",y:"Nlka",a:"Bulmak",o:"Nlka"},
+{n:483,t:"Nwassal",y:"Nvassal",a:"Ulaşmak",o:"Nvas-sal"},
+{n:484,t:"Nrja3",y:"Nrca",a:"Dönmek",o:"Nr-ca"},
+{n:485,t:"Nwaqaf",y:"Nvakaf",a:"Durmak",o:"Nva-kaf"},
+{n:486,t:"Njib",y:"Ncib",a:"Getirmek",o:"Ncib"},
+{n:487,t:"Nwaddi",y:"Nvaddi",a:"Götürmek",o:"Nvad-di"},
+{n:488,t:"Ntayar",y:"Ntayar",a:"Uçmak",o:"Nta-yar"},
+{n:489,t:"Nosbah",y:"Nosbah",a:"Yüzmek",o:"Nos-bah"},
+{n:490,t:"Nghanni",y:"Nganni",a:"Şarkı söylemek",o:"Ngan-ni"},
+{n:491,t:"Nor9os",y:"Norkos",a:"Dans etmek",o:"Nor-kos"},
+{n:492,t:"Nedh7ek",y:"Nedhek",a:"Gülmek",o:"Ned-hek"},
+{n:493,t:"Nebki",y:"Nebki",a:"Ağlamak",o:"Neb-ki"},
+{n:494,t:"Nefra7",y:"Nefrah",a:"Sevinmek",o:"Nef-rah"},
+{n:495,t:"Net3esseb",y:"Netaesseb",a:"Sinirlenmek",o:"Ne-ta-es-seb"},
+{n:496,t:"Nkhaf",y:"Nhaf",a:"Korkmak",o:"Nhaf"},
+{n:497,t:"Nensa",y:"Nensa",a:"Unutmak",o:"Nen-sa"},
+{n:498,t:"Netfakkar",y:"Netfakkar",a:"Hatırlamak",o:"Net-fak-kar"},
+{n:499,t:"Nfakker",y:"Nfakker",a:"Düşünmek",o:"Nfak-ker"},
+{n:500,t:"N7ess",y:"Nhess",a:"Hissetmek",o:"Nhess"},
+{n:501,t:"Far7an",y:"Farhan",a:"Mutlu",o:"Far-han"},
+{n:502,t:"7zin",y:"Hzin",a:"Üzgün",o:"Hzin"},
+{n:503,t:"Za3len",y:"Zaalen",a:"Kızgın",o:"Za-len"},
+{n:504,t:"Khayef",y:"Hayef",a:"Korkmuş",o:"Ha-yef"},
+{n:505,t:"Mabsout",y:"Mabsut",a:"Memnun",o:"Mab-sut"},
+{n:506,t:"Met3asseb",y:"Metaasseb",a:"Sinirli",o:"Me-ta-as-seb"},
+{n:507,t:"Mella",y:"Mella",a:"Sıkılmış",o:"Mel-la"},
+{n:508,t:"Mraya7",y:"Mrayah",a:"Rahat",o:"Mra-yah"},
+{n:509,t:"Wa7ed",y:"Vahed",a:"Yalnız",o:"Va-hed"},
+{n:510,t:"Mechgoul",y:"Meşgul",a:"Meşgul",o:"Meş-gul"},
+{n:511,t:"Mest3jel",y:"Mestacel",a:"Acele eden",o:"Mes-ta-cel"},
+{n:512,t:"Kbir",y:"Kbir",a:"Büyük",o:"Kbir"},
+{n:513,t:"Sghir",y:"Sghir",a:"Küçük",o:"Sghir"},
+{n:514,t:"Tawil",y:"Tavil",a:"Uzun",o:"Ta-vil"},
+{n:515,t:"Qsir",y:"Ksir",a:"Kısa",o:"Ksir"},
+{n:516,t:"3ridh",y:"Aridh",a:"Geniş",o:"A-ridh"},
+{n:517,t:"Dhayaq",y:"Dhayak",a:"Dar",o:"Dha-yak"},
+{n:518,t:"Thgil",y:"Thgil",a:"Ağır",o:"Thgil"},
+{n:519,t:"Khfif",y:"Hfif",a:"Hafif",o:"Hfif"},
+{n:520,t:"S5oun",y:"Shun",a:"Sıcak",o:"Shun"},
+{n:521,t:"Bared",y:"Bared",a:"Soğuk",o:"Ba-red"},
+{n:522,t:"Jdid",y:"Cdid",a:"Yeni",o:"Cdid"},
+{n:523,t:"Qdim",y:"Kdim",a:"Eski",o:"Kdim"},
+{n:524,t:"Behi",y:"Behi",a:"Güzel / İyi",o:"Be-hi"},
+{n:525,t:"Khayeb",y:"Hayeb",a:"Kötü / Çirkin",o:"Ha-yeb"},
+{n:526,t:"Zwin",y:"Zvin",a:"Güzel",o:"Zvin"},
+{n:527,t:"Gbi7",y:"Gbih",a:"Çirkin",o:"Gbih"},
+{n:528,t:"Na9i",y:"Naki",a:"Temiz",o:"Na-ki"},
+{n:529,t:"Wsekh",y:"Vsekh",a:"Kirli",o:"Vsekh"},
+{n:530,t:"S7i7",y:"Shih",a:"Doğru",o:"Shih"},
+{n:531,t:"Ghalet",y:"Galet",a:"Yanlış",o:"Ga-let"},
+{n:532,t:"Sahel",y:"Sahel",a:"Kolay",o:"Sa-hel"},
+{n:533,t:"S3ib",y:"Saib",a:"Zor",o:"Sa-ib"},
+{n:534,t:"Bkri",y:"Bkri",a:"Erken",o:"Bkri"},
+{n:535,t:"M3attel",y:"Maattel",a:"Geç kalmış",o:"Ma-at-tel"},
+{n:536,t:"Sri3",y:"Sri",a:"Hızlı",o:"Sri"},
+{n:537,t:"Bti",y:"Bti",a:"Yavaş",o:"Bti"},
+{n:538,t:"Qwi",y:"Kvi",a:"Güçlü",o:"Kvi"},
+{n:539,t:"Dh3if",y:"Dhaif",a:"Zayıf",o:"Dha-if"},
+{n:540,t:"Smin",y:"Smin",a:"Şişman",o:"Smin"},
+{n:541,t:"R9iq",y:"Rkik",a:"İnce",o:"Rki-k"},
+{n:542,t:"Maftou7",y:"Maftuh",a:"Açık",o:"Maf-tuh"},
+{n:543,t:"Msakkar",y:"Msakkar",a:"Kapalı",o:"Msak-kar"},
+{n:544,t:"Faredh",y:"Faredh",a:"Boş",o:"Fa-redh"},
+{n:545,t:"3amer",y:"Amer",a:"Dolu",o:"A-mer"},
+{n:546,t:"Hana",y:"Hana",a:"Mutlu",o:"Ha-na"},
+{n:547,t:"Chaqi",y:"Şaki",a:"Mutsuz",o:"Şa-ki"},
+{n:548,t:"Mahloul",y:"Mahlul",a:"Çözülmüş",o:"Mah-lul"},
+{n:549,t:"Mfassal",y:"Mfassal",a:"Detaylı",o:"Mfas-sal"},
+{n:550,t:"3adi",y:"Adi",a:"Normal",o:"A-di"},
+{n:551,t:"Khass",y:"Hass",a:"Özel",o:"Hass"},
+{n:552,t:"3am",y:"Am",a:"Genel",o:"Am"},
+{n:553,t:"Wa7dou",y:"Vahdu",a:"Tek başına",o:"Vah-du"},
+{n:554,t:"Ma3 ba3adhhom",y:"Maa baadhhom",a:"Birlikte",o:"Maa baadh-hom"},
+{n:555,t:"Lazem",y:"Lazem",a:"Lazım",o:"La-zem"},
+{n:556,t:"Momken",y:"Momken",a:"Mümkün",o:"Mom-ken"},
+{n:557,t:"Meste7il",y:"Mestehil",a:"İmkânsız",o:"Mes-te-hil"},
+{n:558,t:"Mriguel",y:"Mrigel",a:"Rahat",o:"Mri-gel"},
+{n:559,t:"Mte7ammes",y:"Mtehammes",a:"Heyecanlı",o:"Mte-ham-mes"},
+{n:560,t:"Motefa2el",y:"Motefael",a:"İyimser",o:"Mo-te-fa-el"},
+{n:561,t:"Khedma",y:"Hedma",a:"İş",o:"Hed-ma"},
+{n:562,t:"Kheddim",y:"Heddim",a:"İşçi",o:"Hed-dim"},
+{n:563,t:"Patron",y:"Patron",a:"Patron",o:"Pat-ron"},
+{n:564,t:"Mdir",y:"Mdir",a:"Müdür",o:"Mdir"},
+{n:565,t:"Mo3allm",y:"Moallem",a:"Öğretmen",o:"Mo-al-lem"},
+{n:566,t:"Tbib",y:"Tbib",a:"Doktor",o:"Tbib"},
+{n:567,t:"Mo7ami",y:"Mohami",a:"Avukat",o:"Mo-ha-mi"},
+{n:568,t:"Mohandis",y:"Mohandis",a:"Mühendis",o:"Mo-han-dis"},
+{n:569,t:"7allaq",y:"Hallak",a:"Berber",o:"Hal-lak"},
+{n:570,t:"Khabaz",y:"Habaz",a:"Fırıncı",o:"Ha-baz"},
+{n:571,t:"Tabbakh",y:"Tabbah",a:"Aşçı",o:"Tab-bah"},
+{n:572,t:"Najjar",y:"Naccar",a:"Marangoz",o:"Nac-car"},
+{n:573,t:"7addad",y:"Haddad",a:"Demirci",o:"Had-dad"},
+{n:574,t:"Falleh",y:"Falleh",a:"Çiftçi",o:"Fal-leh"},
+{n:575,t:"Sayyad",y:"Sayyad",a:"Balıkçı",o:"Say-yad"},
+{n:576,t:"Boulis",y:"Bulis",a:"Polis",o:"Bu-lis"},
+{n:577,t:"3askri",y:"Askri",a:"Asker",o:"As-kri"},
+{n:578,t:"Tayar",y:"Tayar",a:"Pilot",o:"Ta-yar"},
+{n:579,t:"Chauffeur",y:"Şofir",a:"Şoför",o:"Şo-fir"},
+{n:580,t:"Infirmier",y:"Enfirmye",a:"Hemşire (e)",o:"En-firm-ye"},
+{n:581,t:"Infirmiera",y:"Enfirmyera",a:"Hemşire (k)",o:"En-firm-ye-ra"},
+{n:582,t:"Sahafi",y:"Sahafi",a:"Gazeteci",o:"Sa-ha-fi"},
+{n:583,t:"Mhandsi",y:"Mhandsi",a:"Teknisyen",o:"Mhand-si"},
+{n:584,t:"Tajir",y:"Tacir",a:"Tüccar",o:"Ta-cir"},
+{n:585,t:"Baya3",y:"Bayaa",a:"Satıcı",o:"Ba-yaa"},
+{n:586,t:"Fakir",y:"Fakir",a:"Fakir",o:"Fa-kir"},
+{n:587,t:"Ghni",y:"Gni",a:"Zengin",o:"Gni"},
+{n:588,t:"Maktoub",y:"Maktub",a:"Mektup",o:"Mak-tub"},
+{n:589,t:"Bureau",y:"Büro",a:"Ofis",o:"Bü-ro"},
+{n:590,t:"Rto7a",y:"Rtoha",a:"Maaş",o:"Rto-ha"},
+{n:591,t:"Flouss",y:"Flus",a:"Para",o:"Flus"},
+{n:592,t:"Dinar",y:"Dinar",a:"Dinar",o:"Di-nar"},
+{n:593,t:"Millime",y:"Millim",a:"Millim",o:"Mil-lim"},
+{n:594,t:"Banka",y:"Banka",a:"Banka",o:"Ban-ka"},
+{n:595,t:"Carte",y:"Kart",a:"Kart",o:"Kart"},
+{n:596,t:"Chik",y:"Şik",a:"Çek",o:"Şik"},
+{n:597,t:"Facture",y:"Faktür",a:"Fatura",o:"Fak-tür"},
+{n:598,t:"Contrat",y:"Kontra",a:"Sözleşme",o:"Kont-ra"},
+{n:599,t:"3otla",y:"Otla",a:"Tatil",o:"Ot-la"},
+{n:600,t:"Choghl",y:"Şogl",a:"İş",o:"Şogl"},
+{n:601,t:"Moqabla",y:"Mokabla",a:"Mülakat",o:"Mo-kab-la"},
+{n:602,t:"CV",y:"Seve",a:"Özgeçmiş",o:"Se-ve"},
+{n:603,t:"Stage",y:"Staj",a:"Staj",o:"Staj"},
+{n:604,t:"Diplome",y:"Diplom",a:"Diploma",o:"Dip-lom"},
+{n:605,t:"Jema3a",y:"Cemaa",a:"Üniversite",o:"Ce-maa"},
+{n:606,t:"Lycee",y:"Lise",a:"Lise",o:"Li-se"},
+{n:607,t:"College",y:"Kolej",a:"Ortaokul",o:"Ko-lej"},
+{n:608,t:"Madrsa ibtida2iya",y:"Madrsa ibtidaiya",a:"İlkokul",o:"Mad-rsa ib-ti-da-i-ya"},
+{n:609,t:"Ders",y:"Ders",a:"Ders",o:"Ders"},
+{n:610,t:"Imti7an",y:"İmtihan",a:"Sınav",o:"İm-ti-han"},
+{n:611,t:"Ymin",y:"Ymin",a:"Sağ",o:"Ymin"},
+{n:612,t:"Ysar",y:"Ysar",a:"Sol",o:"Ysar"},
+{n:613,t:"Tool",y:"Tul",a:"Düz / İleri",o:"Tul"},
+{n:614,t:"Fog",y:"Fog",a:"Yukarı",o:"Fog"},
+{n:615,t:"Ta7t",y:"Taht",a:"Aşağı",o:"Taht"},
+{n:616,t:"Goddem",y:"Goddem",a:"Önde",o:"God-dem"},
+{n:617,t:"Wra",y:"Vra",a:"Arkada",o:"Vra"},
+{n:618,t:"Jnab",y:"Cnab",a:"Yanında",o:"Cnab"},
+{n:619,t:"B3id",y:"Biid",a:"Uzak",o:"Bi-id"},
+{n:620,t:"Qrib",y:"Krib",a:"Yakın",o:"Krib"},
+{n:621,t:"Hna",y:"Hna",a:"Burada",o:"Hna"},
+{n:622,t:"Lhih",y:"Lhih",a:"Orada",o:"Lhih"},
+{n:623,t:"Ghadi",y:"Gadi",a:"Oraya",o:"Ga-di"},
+{n:624,t:"Karhba",y:"Karhba",a:"Araba",o:"Karh-ba"},
+{n:625,t:"Moteur",y:"Motor",a:"Motor",o:"Mo-tor"},
+{n:626,t:"Roue",y:"Ru",a:"Tekerlek",o:"Ru"},
+{n:627,t:"Frein",y:"Fren",a:"Fren",o:"Fren"},
+{n:628,t:"Essence",y:"Esans",a:"Benzin",o:"E-sans"},
+{n:629,t:"Mazout",y:"Mazut",a:"Dizel",o:"Ma-zut"},
+{n:630,t:"Permis",y:"Permi",a:"Ehliyet",o:"Per-mi"},
+{n:631,t:"Route",y:"Rut",a:"Yol",o:"Rut"},
+{n:632,t:"Autoroute",y:"Otorut",a:"Otoyol",o:"O-to-rut"},
+{n:633,t:"Pont",y:"Pon",a:"Köprü",o:"Pon"},
+{n:634,t:"Rond-point",y:"Ronpvan",a:"Kavşak",o:"Ron-pvan"},
+{n:635,t:"Feu rouge",y:"Föruj",a:"Kırmızı ışık",o:"Fö ruj"},
+{n:636,t:"Parking",y:"Parking",a:"Otopark",o:"Par-king"},
+{n:637,t:"Station",y:"Stasyon",a:"İstasyon",o:"Stas-yon"},
+{n:638,t:"Louage",y:"Luaj",a:"Dolmuş",o:"Lu-aj"},
+{n:639,t:"Metro",y:"Metro",a:"Metro",o:"Met-ro"},
+{n:640,t:"Train",y:"Tren",a:"Tren",o:"Tren"},
+{n:641,t:"Babour",y:"Babur",a:"Gemi",o:"Ba-bur"},
+{n:642,t:"Tayara",y:"Tayara",a:"Uçak",o:"Ta-ya-ra"},
+{n:643,t:"Billet",y:"Biye",a:"Bilet",o:"Bi-ye"},
+{n:644,t:"Passport",y:"Pasport",a:"Pasaport",o:"Pas-port"},
+{n:645,t:"Visa",y:"Viza",a:"Vize",o:"Vi-za"},
+{n:646,t:"Douane",y:"Duan",a:"Gümrük",o:"Du-an"},
+{n:647,t:"Valise",y:"Valiz",a:"Bavul",o:"Va-liz"},
+{n:648,t:"Bagage",y:"Bagaj",a:"Bagaj",o:"Ba-gaj"},
+{n:649,t:"Wsel",y:"Vsel",a:"Varış",o:"Vsel"},
+{n:650,t:"Safra",y:"Safra",a:"Yolculuk",o:"Saf-ra"},
+{n:651,t:"Musafir",y:"Musafir",a:"Yolcu",o:"Mu-sa-fir"},
+{n:652,t:"Dour",y:"Dur",a:"Dön",o:"Dur"},
+{n:653,t:"Waqef",y:"Vakef",a:"Dur / Bekle",o:"Va-kef"},
+{n:654,t:"Emchi tool",y:"Emşi tul",a:"Düz git",o:"Em-şi tul"},
+{n:655,t:"Dour lymin",y:"Dur lymin",a:"Sağa dön",o:"Dur ly-min"},
+{n:656,t:"Dour lysar",y:"Dur lysar",a:"Sola dön",o:"Dur ly-sar"},
+{n:657,t:"Win el?",y:"Vin el",a:"Nerede?",o:"Vin el"},
+{n:658,t:"Kadech yeb3ed",y:"Kadeş yebad",a:"Ne kadar uzak?",o:"Ka-deş ye-bad"},
+{n:659,t:"B9it ndwwer 3la",y:"Bkit nduvver ala",a:"Arıyorum",o:"Bkit nduv-ver a-la"},
+{n:660,t:"Wasselni l",y:"Vasselni",a:"Beni götür",o:"Vas-sel-ni"},
+{n:661,t:"Tqas",y:"Tkas",a:"Hava durumu",o:"Tkas"},
+{n:662,t:"Shems",y:"Şems",a:"Güneş",o:"Şems"},
+{n:663,t:"Qmar",y:"Kmar",a:"Ay",o:"Kmar"},
+{n:664,t:"Njoum",y:"Ncum",a:"Yıldızlar",o:"Ncum"},
+{n:665,t:"Sma",y:"Sma",a:"Gökyüzü",o:"Sma"},
+{n:666,t:"S7ab",y:"Shab",a:"Bulut",o:"Shab"},
+{n:667,t:"Mtar",y:"Mtar",a:"Yağmur",o:"Mtar"},
+{n:668,t:"Thelj",y:"Thelc",a:"Kar",o:"Thelc"},
+{n:669,t:"Ri7",y:"Rih",a:"Rüzgâr",o:"Rih"},
+{n:670,t:"3asfa",y:"Asfa",a:"Fırtına",o:"As-fa"},
+{n:671,t:"Ra3d",y:"Raad",a:"Gök gürültüsü",o:"Raad"},
+{n:672,t:"Barq",y:"Bark",a:"Şimşek",o:"Bark"},
+{n:673,t:"Shab",y:"Shab",a:"Sis",o:"Shab"},
+{n:674,t:"7arr",y:"Harr",a:"Sıcak",o:"Harr"},
+{n:675,t:"Bard",y:"Bard",a:"Soğuk",o:"Bard"},
+{n:676,t:"Rotba",y:"Rotba",a:"Nem",o:"Rot-ba"},
+{n:677,t:"Chajra",y:"Şacra",a:"Ağaç",o:"Şac-ra"},
+{n:678,t:"Warda",y:"Varda",a:"Gül / Çiçek",o:"Var-da"},
+{n:679,t:"Nouer",y:"Nuer",a:"Çiçekler",o:"Nu-er"},
+{n:680,t:"7chich",y:"Hşiş",a:"Çimen / Ot",o:"Hşiş"},
+{n:681,t:"Wad",y:"Vad",a:"Nehir",o:"Vad"},
+{n:682,t:"B7ira",y:"Bhira",a:"Göl",o:"Bhi-ra"},
+{n:683,t:"Ra7ba",y:"Rahba",a:"Meydan",o:"Rah-ba"},
+{n:684,t:"Ardh",y:"Ardh",a:"Toprak",o:"Ardh"},
+{n:685,t:"7ajra",y:"Hacra",a:"Taş",o:"Hac-ra"},
+{n:686,t:"Rmel",y:"Rmel",a:"Kum",o:"Rmel"},
+{n:687,t:"7ayawan",y:"Hayavan",a:"Hayvan",o:"Ha-ya-van"},
+{n:688,t:"Kalb",y:"Kalb",a:"Köpek",o:"Kalb"},
+{n:689,t:"Qattous",y:"Kattus",a:"Kedi",o:"Kat-tus"},
+{n:690,t:"3sfour",y:"Asfur",a:"Kuş",o:"As-fur"},
+{n:691,t:"7outa",y:"Huta",a:"Balık",o:"Hu-ta"},
+{n:692,t:"Bqra",y:"Bkra",a:"İnek",o:"Bkra"},
+{n:693,t:"Ghanam",y:"Ganam",a:"Koyun",o:"Ga-nam"},
+{n:694,t:"Ma3za",y:"Maaza",a:"Keçi",o:"Ma-za"},
+{n:695,t:"3oud",y:"Ud",a:"At",o:"Ud"},
+{n:696,t:"7mar",y:"Hmar",a:"Eşek",o:"Hmar"},
+{n:697,t:"Jamal",y:"Cemal",a:"Deve",o:"Ce-mal"},
+{n:698,t:"Dib",y:"Dib",a:"Kurt",o:"Dib"},
+{n:699,t:"7neche",y:"Hneşe",a:"Yılan",o:"Hne-şe"},
+{n:700,t:"Namous",y:"Namus",a:"Sivrisinek",o:"Na-mus"},
+{n:701,t:"Nwa3ed",y:"Nvaed",a:"Söz vermek",o:"Nva-ed"},
+{n:702,t:"Nkhabbi",y:"Nhabbi",a:"Saklamak",o:"Nhab-bi"},
+{n:703,t:"Nqarem",y:"Nkarem",a:"Kıyaslamak",o:"Nka-rem"},
+{n:704,t:"Noqsem",y:"Noksem",a:"Bölmek",o:"Nok-sem"},
+{n:705,t:"Njamm3a",y:"Ncamma",a:"Toplamak",o:"Ncam-ma"},
+{n:706,t:"Nfasser",y:"Nfasser",a:"Açıklamak",o:"Nfas-ser"},
+{n:707,t:"Ntarjem",y:"Ntarcem",a:"Tercüme etmek",o:"Ntar-cem"},
+{n:708,t:"Nwafaq",y:"Nvafak",a:"Kabul etmek",o:"Nva-fak"},
+{n:709,t:"Narfedh",y:"Narfedh",a:"Reddetmek",o:"Nar-fedh"},
+{n:710,t:"Njarreb",y:"Ncarreb",a:"Denemek",o:"Ncar-reb"},
+{n:711,t:"Nja7",y:"Ncah",a:"Başarmak",o:"Ncah"},
+{n:712,t:"Fchel",y:"Fşel",a:"Başarısız olmak",o:"Fşel"},
+{n:713,t:"Nsameh",y:"Nsameh",a:"Affetmek",o:"Nsa-meh"},
+{n:714,t:"Nlouem",y:"Nluem",a:"Azarlamak",o:"Nlu-em"},
+{n:715,t:"N7arem",y:"Nharem",a:"Kıskanmak",o:"Nha-rem"},
+{n:716,t:"Nsta7aq",y:"Nstahak",a:"Hak etmek",o:"Nsta-hak"},
+{n:717,t:"Ntmannna",y:"Ntmannna",a:"Dilemek",o:"Ntman-na"},
+{n:718,t:"Netsowwar",y:"Netsovvar",a:"Hayal etmek",o:"Net-sov-var"},
+{n:719,t:"Nekhtar3",y:"Nehtara",a:"İcat etmek",o:"Neh-ta-ra"},
+{n:720,t:"N9arrer",y:"Nkarrer",a:"Karar vermek",o:"Nkar-rer"},
+{n:721,t:"N3awwed",y:"Naavved",a:"Tekrarlamak",o:"Naav-ved"},
+{n:722,t:"Nbaddel",y:"Nbaddel",a:"Değiştirmek",o:"Nbad-del"},
+{n:723,t:"Nza7em",y:"Nzahem",a:"Kalabalık etmek",o:"Nza-hem"},
+{n:724,t:"Ntabar3",y:"Ntabara",a:"Bağışlamak",o:"Nta-ba-ra"},
+{n:725,t:"Nghalet",y:"Ngalet",a:"Hata yapmak",o:"Nga-let"},
+{n:726,t:"Nsa7a7",y:"Nsahah",a:"Düzeltmek",o:"Nsahah"},
+{n:727,t:"Nt7adda",y:"Nthadda",a:"Meydan okumak",o:"Nthad-da"},
+{n:728,t:"N3awed 7kayet",y:"Naaved hkayet",a:"Anlatmak",o:"Na-ved hka-yet"},
+{n:729,t:"Ntfe7em",y:"Ntfehem",a:"Anlaşmak",o:"Ntfe-hem"},
+{n:730,t:"Netkhane9",y:"Nethanek",a:"Kavga etmek",o:"Net-ha-nek"},
+{n:731,t:"Netsal7ou",y:"Netsalhu",a:"Barışmak",o:"Net-sal-hu"},
+{n:732,t:"N7echm",y:"Nheşm",a:"Saygı duymak",o:"Nheşm"},
+{n:733,t:"Nwathaq",y:"Nvathak",a:"Güvenmek",o:"Nva-thak"},
+{n:734,t:"Nchek",y:"Nşek",a:"Şüphelenmek",o:"Nşek"},
+{n:735,t:"Ntekhyel",y:"Ntehyel",a:"Tahmin etmek",o:"Nteh-yel"},
+{n:736,t:"N7awel",y:"Nhavel",a:"Çabalamak",o:"Nhavel"},
+{n:737,t:"Nkammel",y:"Nkammel",a:"Tamamlamak",o:"Nkam-mel"},
+{n:738,t:"Nebda men jdid",y:"Nebda men cdid",a:"Yeniden başla",o:"Nebda cdid"},
+{n:739,t:"Netnafes",y:"Netnafes",a:"Nefes almak",o:"Net-na-fes"},
+{n:740,t:"Nesta7mel",y:"Nestahmel",a:"Katlanmak",o:"Nes-tah-mel"},
+{n:741,t:"Nadhom",y:"Nadhom",a:"Düzenlemek",o:"Na-dhom"},
+{n:742,t:"N5attar",y:"Nhattar",a:"Planlamak",o:"Nhat-tar"},
+{n:743,t:"Nesta3red",y:"Nestared",a:"Gözden geçir",o:"Nes-ta-red"},
+{n:744,t:"Nqayed",y:"Nkayed",a:"Ölçmek",o:"Nka-yed"},
+{n:745,t:"Nwazzen",y:"Nvazzen",a:"Tartmak",o:"Nvaz-zen"},
+{n:746,t:"Nkhallet",y:"Nhallet",a:"Karıştırmak",o:"Nhal-let"},
+{n:747,t:"Nfarre9",y:"Nfarrek",a:"Ayırmak",o:"Nfar-rek"},
+{n:748,t:"N9oss",y:"Nkoss",a:"Kesmek",o:"Nkoss"},
+{n:749,t:"Nlasseq",y:"Nlassek",a:"Yapıştırmak",o:"Nlas-sek"},
+{n:750,t:"Nwallaa",y:"Nvallaa",a:"Yakmak",o:"Nval-laa"},
+{n:751,t:"Ntfa",y:"Ntfa",a:"Söndürmek",o:"Ntfa"},
+{n:752,t:"Nla9i",y:"Nlaki",a:"Karşılaşmak",o:"Nlaki"},
+{n:753,t:"Nkhalli",y:"Nhalli",a:"Bırakmak",o:"Nhalli"},
+{n:754,t:"Nerja3",y:"Nerca",a:"Geri dönmek",o:"Nerca"},
+{n:755,t:"Nzid",y:"Nzid",a:"Eklemek",o:"Nzid"},
+{n:756,t:"Nna99es",y:"Nnakkes",a:"Azaltmak",o:"Nnak-kes"},
+{n:757,t:"N3awn",y:"Naavn",a:"Yardım etmek",o:"Naavn"},
+{n:758,t:"Nesta3en",y:"Nestaen",a:"Yardım istemek",o:"Nestaen"},
+{n:759,t:"N5arrej",y:"Nharrec",a:"Dışarı atmak",o:"Nhar-rec"},
+{n:760,t:"Ndakhkhel",y:"Ndahhel",a:"İçeri almak",o:"Ndah-hel"},
+{n:761,t:"Ntefakar",y:"Ntefakar",a:"Düşünceye dal",o:"Nte-fa-kar"},
+{n:762,t:"N9ader",y:"Nkader",a:"Takdir etmek",o:"Nka-der"},
+{n:763,t:"Nesma7",y:"Nesmah",a:"İzin vermek",o:"Nesmah"},
+{n:764,t:"Nemna3",y:"Nemna",a:"Yasaklamak",o:"Nemna"},
+{n:765,t:"Nsa3ed",y:"Nsaed",a:"Desteklemek",o:"Nsaed"},
+{n:766,t:"N3ared",y:"Nared",a:"Karşı çıkmak",o:"Nared"},
+{n:767,t:"Nketheb",y:"Nketheb",a:"Abone olmak",o:"Nketheb"},
+{n:768,t:"Nlawwej",y:"Nlawwec",a:"Dolaşmak",o:"Nlawvec"},
+{n:769,t:"Nse99ef",y:"Nsekkef",a:"Alkışlamak",o:"Nsekkef"},
+{n:770,t:"Nwa3dek",y:"Nvaadek",a:"Söz veriyorum",o:"Nvaadek"},
+{n:771,t:"Telephone",y:"Telefon",a:"Telefon",o:"Telefon"},
+{n:772,t:"Portable",y:"Portabl",a:"Cep telefonu",o:"Portabl"},
+{n:773,t:"Internet",y:"İnternet",a:"İnternet",o:"İnternet"},
+{n:774,t:"Facebook",y:"Fesbuk",a:"Facebook",o:"Fesbuk"},
+{n:775,t:"Rissala",y:"Rissala",a:"Mesaj",o:"Rissala"},
+{n:776,t:"Appel",y:"Appel",a:"Arama",o:"Appel"},
+{n:777,t:"Na3millek appel",y:"Naamillek appel",a:"Seni ararım",o:"Appel"},
+{n:778,t:"Ebathli message",y:"Ebaatli mesaj",a:"Mesaj at",o:"Mesaj"},
+{n:779,t:"Wi-Fi",y:"Vayfa",a:"Wi-Fi",o:"Vayfa"},
+{n:780,t:"Chargeur",y:"Şarjor",a:"Şarj aleti",o:"Şarjor"},
+{n:781,t:"Tswira",y:"Tsvira",a:"Fotoğraf",o:"Tsvira"},
+{n:782,t:"Video",y:"Video",a:"Video",o:"Video"},
+{n:783,t:"Application",y:"Aplikasyon",a:"Uygulama",o:"Aplikasyon"},
+{n:784,t:"7afla",y:"Hafla",a:"Parti",o:"Hafla"},
+{n:785,t:"3ars",y:"Ars",a:"Düğün",o:"Ars"},
+{n:786,t:"3id milad",y:"İd milad",a:"Doğum günü",o:"İd milad"},
+{n:787,t:"Hadiya",y:"Hadiya",a:"Hediye",o:"Hadiya"},
+{n:788,t:"Da3wa",y:"Daava",a:"Davet",o:"Daava"},
+{n:789,t:"Maw3id",y:"Mavid",a:"Randevu",o:"Mavid"},
+{n:790,t:"Liqaa",y:"Likaa",a:"Buluşma",o:"Likaa"},
+{n:791,t:"7afel",y:"Hafel",a:"Eğlenceli",o:"Hafel"},
+{n:792,t:"Emmelli",y:"Emmelli",a:"Sıkıcı",o:"Emmelli"},
+{n:793,t:"Modhek",y:"Modhek",a:"Komik",o:"Modhek"},
+{n:794,t:"Gharib",y:"Garib",a:"Garip",o:"Garib"},
+{n:795,t:"3adi",y:"Adi",a:"Normal",o:"Adi"},
+{n:796,t:"Mthabba",y:"Mthabba",a:"Sevgi",o:"Mthabba"},
+{n:797,t:"Sadaqa",y:"Sadaka",a:"Dostluk",o:"Sadaka"},
+{n:798,t:"Thiqqa",y:"Thikka",a:"Güven",o:"Thikka"},
+{n:799,t:"I7tirem",y:"İhtirem",a:"Saygı",o:"İhtirem"},
+{n:800,t:"Soulh",y:"Sulh",a:"Barış",o:"Sulh"},
+{n:801,t:"7arb",y:"Harb",a:"Savaş",o:"Harb"},
+{n:802,t:"7orriya",y:"Horriya",a:"Özgürlük",o:"Horriya"},
+{n:803,t:"3adl",y:"Adl",a:"Adalet",o:"Adl"},
+{n:804,t:"7aq",y:"Hak",a:"Hak",o:"Hak"},
+{n:805,t:"Wajib",y:"Vacib",a:"Görev",o:"Vacib"},
+{n:806,t:"Qanoun",y:"Kanun",a:"Kanun",o:"Kanun"},
+{n:807,t:"7kouema",y:"Hkuema",a:"Hükümet",o:"Hkuema"},
+{n:808,t:"Dawla",y:"Davla",a:"Devlet",o:"Davla"},
+{n:809,t:"Siyyassa",y:"Siyyasa",a:"Siyaset",o:"Siyyasa"},
+{n:810,t:"Intikhabat",y:"İntihabat",a:"Seçimler",o:"İntihabat"},
+{n:811,t:"Mochkla",y:"Moşkla",a:"Problem",o:"Moşkla"},
+{n:812,t:"7all",y:"Hall",a:"Çözüm",o:"Hall"},
+{n:813,t:"Fikra",y:"Fikra",a:"Fikir",o:"Fikra"},
+{n:814,t:"Raay",y:"Ray",a:"Görüş",o:"Ray"},
+{n:815,t:"Soual",y:"Sual",a:"Soru",o:"Sual"},
+{n:816,t:"Jaweb",y:"Caveb",a:"Cevap",o:"Caveb"},
+{n:817,t:"7aja",y:"Haca",a:"İhtiyaç",o:"Haca"},
+{n:818,t:"Sabab",y:"Sabab",a:"Sebep",o:"Sabab"},
+{n:819,t:"Natija",y:"Natica",a:"Sonuç",o:"Natica"},
+{n:820,t:"Hadaf",y:"Hadaf",a:"Hedef",o:"Hadaf"},
+{n:821,t:"Khotta",y:"Hotta",a:"Plan",o:"Hotta"},
+{n:822,t:"Tajroba",y:"Tacroba",a:"Tecrübe",o:"Tacroba"},
+{n:823,t:"Ma3rifa",y:"Maarifa",a:"Bilgi",o:"Maarifa"},
+{n:824,t:"3ilm",y:"İlm",a:"Bilim",o:"İlm"},
+{n:825,t:"Thaqafa",y:"Thakafa",a:"Kültür",o:"Thakafa"},
+{n:826,t:"Tarikh",y:"Tarih",a:"Tarih",o:"Tarih"},
+{n:827,t:"Jougrafi",y:"Cugrafi",a:"Coğrafya",o:"Cugrafi"},
+{n:828,t:"Riyadhiyat",y:"Riyadhiyat",a:"Matematik",o:"Riyadhiyat"},
+{n:829,t:"Logha",y:"Logha",a:"Dil",o:"Logha"},
+{n:830,t:"3arbi",y:"Arbi",a:"Arapça",o:"Arbi"},
+{n:831,t:"Franswi",y:"Franswi",a:"Fransızca",o:"Franswi"},
+{n:832,t:"Inglizi",y:"İnglizi",a:"İngilizce",o:"İnglizi"},
+{n:833,t:"Turki",y:"Turki",a:"Türkçe",o:"Turki"},
+{n:834,t:"Kiteb",y:"Kiteb",a:"Kitap",o:"Kiteb"},
+{n:835,t:"Jornane",y:"Cornan",a:"Gazete",o:"Cornan"},
+{n:836,t:"Majalla",y:"Macalla",a:"Dergi",o:"Macalla"},
+{n:837,t:"Film",y:"Film",a:"Film",o:"Film"},
+{n:838,t:"Musiqa",y:"Musika",a:"Müzik",o:"Musika"},
+{n:839,t:"Ughniya",y:"Ugniya",a:"Şarkı",o:"Ugniya"},
+{n:840,t:"Raqsa",y:"Raksa",a:"Dans",o:"Raksa"},
+{n:841,t:"Riyyedha",y:"Riyedha",a:"Spor",o:"Riyedha"},
+{n:842,t:"Koura",y:"Kura",a:"Futbol",o:"Kura"},
+{n:843,t:"Match",y:"Matş",a:"Maç",o:"Matş"},
+{n:844,t:"Equipe",y:"Ekip",a:"Takım",o:"Ekip"},
+{n:845,t:"Champion",y:"Şampiyon",a:"Şampiyon",o:"Şampiyon"},
+{n:846,t:"Rabi7",y:"Rabih",a:"Kazanan",o:"Rabih"},
+{n:847,t:"Khasar",y:"Hasar",a:"Kaybeden",o:"Hasar"},
+{n:848,t:"Nsalli",y:"Nsalli",a:"Namaz kılmak",o:"Nsalli"},
+{n:849,t:"Nsoum",y:"Nsum",a:"Oruç tutmak",o:"Nsum"},
+{n:850,t:"N7ejj",y:"Nhecc",a:"Hacca gitmek",o:"Nhecc"},
+{n:851,t:"Elli fi bali",y:"Elli fi bali",a:"Aklımdaki",o:"Elli-fi-bali"},
+{n:852,t:"Ma3netha",y:"Maanetha",a:"Yani",o:"Ma-ne-tha"},
+{n:853,t:"Bel7aq",y:"Belhak",a:"Gerçekten",o:"Bel-hak"},
+{n:854,t:"Bessa7",y:"Bessah",a:"Cidden",o:"Bes-sah"},
+{n:855,t:"Inchallah",y:"İnşallah",a:"İnşallah",o:"İnşallah"},
+{n:856,t:"Machallah",y:"Maşallah",a:"Maşallah",o:"Maşallah"},
+{n:857,t:"Allahumma",y:"Allahumma",a:"Allah'ım",o:"Allahumma"},
+{n:858,t:"Rabi ysahlek",y:"Rabi ysahlek",a:"Allah kolaylık versin",o:"Ysahlek"},
+{n:859,t:"Allah y3inek",y:"Allah yinek",a:"Allah yardım etsin",o:"Yinek"},
+{n:860,t:"Tbarkallah",y:"Tbarkallah",a:"Mübarek olsun",o:"Tbarkallah"},
+{n:861,t:"Mabrouk",y:"Mabruk",a:"Tebrikler",o:"Mabruk"},
+{n:862,t:"Allah yer7mou",y:"Allah yerhmou",a:"Allah rahmet etsin",o:"Yerhmou"},
+{n:863,t:"Essa3a ljeyya",y:"Essaa lceyya",a:"Gelecek saat",o:"Lceyya"},
+{n:864,t:"Mel awwel",y:"Mel avvel",a:"En başından",o:"Avvel"},
+{n:865,t:"Fil ekher",y:"Fil eher",a:"Sonuçta",o:"Eher"},
+{n:866,t:"3la kol 7al",y:"Ala kol hal",a:"Her halükârda",o:"Hal"},
+{n:867,t:"Bla ma",y:"Bla ma",a:"Olmadan",o:"Bla ma"},
+{n:868,t:"Mech mochkla",y:"Meş moşkla",a:"Sorun değil",o:"Moşkla"},
+{n:869,t:"Kol chi behi",y:"Kol şi behi",a:"Her şey iyi",o:"Behi"},
+{n:870,t:"Wa9tech?",y:"Vakteş?",a:"Ne zaman?",o:"Vakteş"},
+{n:871,t:"Ghodwa nchallah",y:"Ghodva nşallah",a:"Yarın inşallah",o:"Ghodva"},
+{n:872,t:"Men ba3d",y:"Men baad",a:"Daha sonra",o:"Baad"},
+{n:873,t:"Dhaher",y:"Dhaher",a:"Görünüşe göre",o:"Dhaher"},
+{n:874,t:"Akid",y:"Akid",a:"Kesinlikle",o:"Akid"},
+{n:875,t:"Momken",y:"Momken",a:"Belki",o:"Momken"},
+{n:876,t:"Yomken",y:"Yomken",a:"Mümkün",o:"Yomken"},
+{n:877,t:"Ma ymkench",y:"Ma ymkenş",a:"Mümkün değil",o:"Ymkenş"},
+{n:878,t:"Lazem",y:"Lazem",a:"Lazım",o:"Lazem"},
+{n:879,t:"Ma lazem ch",y:"Ma lazem ş",a:"Gerekli değil",o:"Lazem-ş"},
+{n:880,t:"Ya khi",y:"Ya hi",a:"Kardeşim",o:"Ya hi"},
+{n:881,t:"Ya sahbi",y:"Ya sahbi",a:"Dostum",o:"Sahbi"},
+{n:882,t:"Ya 3ammi",y:"Ya ammi",a:"Amca",o:"Ammi"},
+{n:883,t:"Ya lella",y:"Ya lella",a:"Hanımefendi",o:"Lella"},
+{n:884,t:"Ya sidi",y:"Ya sidi",a:"Beyefendi",o:"Sidi"},
+{n:885,t:"Taw taw",y:"Tav tav",a:"Hemen şimdi",o:"Tav-tav"},
+{n:886,t:"Hak fi ydek",y:"Hak fi ydek",a:"Kontrolünde",o:"Hak-fi-ydek"},
+{n:887,t:"Ma3andich fekra",y:"Maandiş fekra",a:"Fikrim yok",o:"Fekra"},
+{n:888,t:"Elli y7ebb rabbna",y:"Elli yhebb rabbna",a:"Allah ne isterse",o:"Rabbna"},
+{n:889,t:"El 7amdoullah 3la kol chi",y:"El hamdullah ala kol şi",a:"Her şey için şükür",o:"Hamdullah"},
+{n:890,t:"Nhar abyad",y:"Nhar abyad",a:"Güzel gün",o:"Abyad"},
+{n:891,t:"Nhar akhal",y:"Nhar akhal",a:"Kara gün",o:"Akhal"},
+{n:892,t:"Rabi yfaraj",y:"Rabi yfarac",a:"Allah kolaylaştırsın",o:"Yfarac"},
+{n:893,t:"S3ib 3liya",y:"Saib aliya",a:"Bana zor",o:"Saib"},
+{n:894,t:"Sahel 3liya",y:"Sahel aliya",a:"Bana kolay",o:"Sahel"},
+{n:895,t:"Ma 3andich waqt",y:"Ma andiş vakt",a:"Vaktim yok",o:"Vakt"},
+{n:896,t:"Fi waqtou",y:"Fi vaktu",a:"Zamanında",o:"Vaktu"},
+{n:897,t:"3al faredh",y:"Al faredh",a:"Diyelim ki",o:"Faredh"},
+{n:898,t:"Mithal",y:"Mithal",a:"Mesela",o:"Mithal"},
+{n:899,t:"Ya3ni",y:"Yaani",a:"Yani",o:"Yaani"},
+{n:900,t:"Bech n9ollek",y:"Beş nkollek",a:"Sana söyleyeyim",o:"Nkollek"},
+{n:901,t:"Sem3et?",y:"Smat?",a:"Duydun mu?",o:"Smat"},
+{n:902,t:"Cheft?",y:"Şeft?",a:"Gördün mü?",o:"Şeft"},
+{n:903,t:"3reft?",y:"Areft?",a:"Anladın mı?",o:"Areft"},
+{n:904,t:"Akid",y:"Akid",a:"Kesinlikle",o:"Akid"},
+{n:905,t:"El mohim",y:"El mohim",a:"Önemli olan",o:"Mohim"},
+{n:906,t:"Ila",y:"İla",a:"Eğer",o:"İla"},
+{n:907,t:"Law ken",y:"Lav ken",a:"Keşke",o:"Lav-ken"},
+{n:908,t:"3sa",y:"Asa",a:"Umarım",o:"Asa"},
+{n:909,t:"Rabbi ykhallik",y:"Rabbi yhallik",a:"Allah seni korusun",o:"Yhallik"},
+{n:910,t:"Mech mushkla",y:"Meş muşkla",a:"Problem değil",o:"Muşkla"},
+{n:911,t:"Tarbiya",y:"Tarbiya",a:"Terbiye",o:"Tarbiya"},
+{n:912,t:"Akhlaq",y:"Ahlak",a:"Ahlak",o:"Ahlak"},
+{n:913,t:"Dhammir",y:"Dhammir",a:"Vicdan",o:"Dhammir"},
+{n:914,t:"Wafy",y:"Vafi",a:"Vefalı",o:"Vafi"},
+{n:915,t:"Khayen",y:"Hayen",a:"Hain",o:"Hayen"},
+{n:916,t:"Maktoueb",y:"Maktub",a:"Kader",o:"Maktub"},
+{n:917,t:"Niya",y:"Niya",a:"Niyet",o:"Niya"},
+{n:918,t:"Tawba",y:"Tavba",a:"Tövbe",o:"Tavba"},
+{n:919,t:"Do3a",y:"Dua",a:"Dua",o:"Dua"},
+{n:920,t:"Iman",y:"İman",a:"İman",o:"İman"},
+{n:921,t:"Sabr",y:"Sabr",a:"Sabır",o:"Sabr"},
+{n:922,t:"Chokr",y:"Şokr",a:"Şükür",o:"Şokr"},
+{n:923,t:"Tawakkol",y:"Tavakkol",a:"Tevekkül",o:"Tavakkol"},
+{n:924,t:"Baraka",y:"Baraka",a:"Bereket",o:"Baraka"},
+{n:925,t:"Rahma",y:"Rahma",a:"Merhamet",o:"Rahma"},
+{n:926,t:"Hidaya",y:"Hidaya",a:"Hidayet",o:"Hidaya"},
+{n:927,t:"Fitna",y:"Fitna",a:"Fitne",o:"Fitna"},
+{n:928,t:"Famma",y:"Famma",a:"Var",o:"Famma"},
+{n:929,t:"Ma fammech",y:"Ma fammeş",a:"Yok",o:"Fammeş"},
+{n:930,t:"3andi",y:"Andi",a:"Bende var",o:"Andi"},
+{n:931,t:"Ma3andich",y:"Maandiş",a:"Bende yok",o:"Maandiş"},
+{n:932,t:"Lezim nmchiw",y:"Lezim nemşiv",a:"Gitmeliyiz",o:"Nemşiv"},
+{n:933,t:"Waqtelli",y:"Vaktelli",a:"-diği zaman",o:"Vaktelli"},
+{n:934,t:"Ena n7ebb Sousse",y:"Ena nhebb Sus",a:"Sousse'u seviyorum",o:"Sus"},
+{n:935,t:"Sousse zina",y:"Sus zina",a:"Sousse güzel",o:"Zina"},
+{n:936,t:"Meshrou3",y:"Meşru",a:"Proje",o:"Meşru"},
+{n:937,t:"Masouliya",y:"Masuliya",a:"Sorumluluk",o:"Masuliya"},
+{n:938,t:"Ibda3",y:"İbdaa",a:"Yaratıcılık",o:"İbdaa"},
+{n:939,t:"Moustaqbal",y:"Mustakbal",a:"Gelecek",o:"Mustakbal"},
+{n:940,t:"Madhi",y:"Madhi",a:"Geçmiş",o:"Madhi"},
+{n:941,t:"7adhir",y:"Hadhir",a:"Hazır",o:"Hadhir"},
+{n:942,t:"Ta3ayoch",y:"Taayoş",a:"Birlikte yaşama",o:"Taayoş"},
+{n:943,t:"Salaam",y:"Selam",a:"Barış",o:"Selam"},
+{n:944,t:"Dimouqratiya",y:"Dimukratiya",a:"Demokrasi",o:"Dimukratiya"},
+{n:945,t:"Mojtama3",y:"Moctamaa",a:"Toplum",o:"Moctamaa"},
+{n:946,t:"Iqtisad",y:"İktisad",a:"Ekonomi",o:"İktisad"},
+{n:947,t:"Tanmiya",y:"Tanmiya",a:"Kalkınma",o:"Tanmiya"},
+{n:948,t:"Bi2a",y:"Biia",a:"Çevre",o:"Biia"},
+{n:949,t:"Talawoth",y:"Talavvuth",a:"Kirlilik",o:"Talavvuth"},
+{n:950,t:"Istiqlaliya",y:"İstiklaliya",a:"Bağımsızlık",o:"İstiklaliya"},
+{n:951,t:"Barcha",y:"Barşa",a:"Hepsi",o:"Barşa"},
+{n:952,t:"Ya5i",y:"Yahi",a:"İyi",o:"Yahi"},
+{n:953,t:"Ey wallah",y:"Ey vallah",a:"Vallahi evet",o:"Vallah"},
+{n:954,t:"Wallahi",y:"Wallahi",a:"Vallahi",o:"Wallahi"},
+{n:955,t:"Billahi",y:"Billahi",a:"Allah aşkına",o:"Billahi"},
+{n:956,t:"Sayi?",y:"Sayi?",a:"Ne oldu?",o:"Sayi"},
+{n:957,t:"Wech rak?",y:"Veş rak?",a:"Nasıl gidiyor?",o:"Rak"},
+{n:958,t:"Labas?",y:"Labas?",a:"İyi misin?",o:"Labas"},
+{n:959,t:"Koulchi behi",y:"Kulşi behi",a:"Her şey yolunda",o:"Behi"},
+{n:960,t:"Ndaber rouhi",y:"Ndaber ruhi",a:"Başımın çaresine bakarım",o:"Ruhi"},
+{n:961,t:"Mannich 3aref",y:"Manniş aaref",a:"Bilmiyorum",o:"Aaref"},
+{n:962,t:"Yalla nemchiw",y:"Yalla nemşiv",a:"Hadi gidelim",o:"Yalla"},
+{n:963,t:"Dkhil",y:"Dhil",a:"İçeri",o:"Dhil"},
+{n:964,t:"Barra",y:"Barra",a:"Dışarı",o:"Barra"},
+{n:965,t:"Fissa3",y:"Fissa",a:"Hemen",o:"Fissa"},
+{n:966,t:"Chwaya chwaya",y:"Şvaya şvaya",a:"Ağır ağır",o:"Şvaya"},
+{n:967,t:"B9a 3la rouak",y:"Bka ala ruak",a:"Sakin ol",o:"Ruak"},
+{n:968,t:"Ma tetzametch",y:"Ma tetzameş",a:"Sinirlenme",o:"Tetzameş"},
+{n:969,t:"Hebbet",y:"Hebbet",a:"İndi",o:"Hebbet"},
+{n:970,t:"Tla3",y:"Tlaa",a:"Çıktı",o:"Tlaa"},
+{n:971,t:"Kharrej",y:"Harrec",a:"Çıkardı",o:"Harrec"},
+{n:972,t:"Dakhkhel",y:"Dahhel",a:"İçeri aldı",o:"Dahhel"},
+{n:973,t:"Waddha",y:"Vaddha",a:"Açık",o:"Vaddha"},
+{n:974,t:"Mkhabi",y:"Mhabi",a:"Gizli",o:"Mhabi"},
+{n:975,t:"Sahb",y:"Sahb",a:"Çekti",o:"Sahb"},
+{n:976,t:"Dfa3",y:"Dfaa",a:"İtti",o:"Dfaa"},
+{n:977,t:"Rma",y:"Rma",a:"Attı",o:"Rma"},
+{n:978,t:"Lqef",y:"Lkef",a:"Yakaladı",o:"Lkef"},
+{n:979,t:"Rakh",y:"Rah",a:"Bıraktı",o:"Rah"},
+{n:980,t:"Ref3a",y:"Refaa",a:"Kaldırdı",o:"Refaa"},
+{n:981,t:"Ksar",y:"Ksar",a:"Kırdı",o:"Ksar"},
+{n:982,t:"Sleh",y:"Sleh",a:"Tamir etti",o:"Sleh"},
+{n:983,t:"Bni",y:"Bni",a:"İnşa etti",o:"Bni"},
+{n:984,t:"Haddem",y:"Haddem",a:"Yıktı",o:"Haddem"},
+{n:985,t:"Nal3ab koura",y:"Nalab kura",a:"Futbol oynarım",o:"Kura"},
+{n:986,t:"Nchouf match",y:"Nşuf matş",a:"Maç izlerim",o:"Match"},
+{n:987,t:"Farka",y:"Farka",a:"Fark",o:"Farka"},
+{n:988,t:"Nafs el 7aja",y:"Nafs el haca",a:"Aynı şey",o:"Haca"},
+{n:989,t:"Bejj",y:"Becc",a:"Çok",o:"Becc"},
+{n:990,t:"Zaama",y:"Zaama",a:"Güya",o:"Zaama"},
+{n:991,t:"3ad",y:"Ad",a:"Hâlâ",o:"Ad"},
+{n:992,t:"3adech?",y:"Adeş?",a:"Henüz mi?",o:"Adeş"},
+{n:993,t:"Mezyen",y:"Mezyen",a:"Güzel",o:"Mezyen"},
+{n:994,t:"Haw",y:"Hav",a:"İşte",o:"Hav"},
+{n:995,t:"Rod balk",y:"Rod balk",a:"Dikkat et",o:"Rod-balk"},
+{n:996,t:"Neftour",y:"Neftur",a:"Kahvaltı",o:"Nef-tur"},
+{n:997,t:"Ghdwe",y:"Ghdve",a:"Öğle yemeği",o:"Ghd-ve"},
+{n:998,t:"3cha",y:"Aşa",a:"Akşam yemeği",o:"A-şa"},
+{n:999,t:"5alli rahi",y:"Halli rahi",a:"Rahat bırak",o:"Hal-li ra-hi"},
+{n:1000,t:"Ey bessa7",y:"Ey bessah",a:"Evet gerçekten",o:"Ey bes-sah"},
+{n:1001,t:"Ghodwa nkamlou",y:"Ghodva nkamlu",a:"Yarın devam ederiz",o:"Ghod-va nkam-lu"},
+{n:1002,t:"Nkhamem",y:"Nhammem",a:"Düşünüyorum",o:"Nham-mem"},
+{n:1003,t:"Ma tkhammemch",y:"Ma thammemş",a:"Düşünme",o:"Ma tham-memş"},
+{n:1004,t:"Hazza",y:"Hazza",a:"Salladı",o:"Haz-za"},
+{n:1005,t:"Nfakh",y:"Nfah",a:"Şişti",o:"Nfah"},
+{n:1006,t:"Mzel chwaya",y:"Mzel şvaya",a:"Biraz daha",o:"Mzel şva-ya"},
+{n:1007,t:"Ena mechi houni",y:"Ena meşi huni",a:"Ben buradan değilim",o:"E-na me-şi hu-ni"},
+{n:1008,t:"Manich mwafaq",y:"Maniş mvafak",a:"Aynı fikirde değilim",o:"Ma-niş mva-fak"},
+{n:1009,t:"Rani mwafaq",y:"Rani mvafak",a:"Aynı fikirdeyim",o:"Ra-ni mva-fak"},
+{n:1010,t:"Chnoua ray-ek?",y:"Şnuva rayyek?",a:"Fikrin ne?",o:"Şnu-va ray-yek?"},
+{n:1011,t:"El medina el 3tiqa",y:"El medina el atika",a:"Eski şehir",o:"Atika"},
+{n:1012,t:"Ribat",y:"Ribat",a:"Ribat / Kale",o:"Ri-bat"},
+{n:1013,t:"Qasba",y:"Kasba",a:"Kale / Kasaba",o:"Kas-ba"},
+{n:1014,t:"Port el Kantaoui",y:"Port el Kantavi",a:"Kantaoui Limanı",o:"Port"},
+{n:1015,t:"Yezzi hkeya",y:"Yezzi hkeya",a:"Yeter bu hikaye",o:"Hkeya"},
+{n:1016,t:"Ma3neha ech?",y:"Maaneha eş?",a:"Ne demek?",o:"Ma-ne-ha eş?"},
+{n:1017,t:"B9it netghada",y:"Bkit netgadda",a:"Öğle yemeği vakti",o:"Netgadda"},
+{n:1018,t:"B9it net3acha",y:"Bkit netaaşa",a:"Akşam yemeği vakti",o:"Netaaşa"},
+{n:1019,t:"Ghodwa el sbah",y:"Ghodva el sbah",a:"Yarın sabah",o:"Ghodva"},
+{n:1020,t:"Lbera7 fi el3chiya",y:"Lberah fil aşiya",a:"Dün akşam",o:"Lberah"},
+{n:1021,t:"Manich fehem",y:"Maniş fehem",a:"Anlamıyorum",o:"Fehem"},
+{n:1022,t:"Jemla fi jemla",y:"Cemla fi cemla",a:"Toptan / Hepsi",o:"Cemla"},
+{n:1023,t:"Ki nji l Sousse",y:"Ki nci l Sus",a:"Sousse'a geldiğimde",o:"Sousse"},
+{n:1024,t:"Isti3dad",y:"İstidad",a:"Hazırlık",o:"İstidad"},
+{n:1025,t:"Iltizam",y:"İltizam",a:"Sorumluluk / Taahhüt",o:"İltizam"},
+{n:1026,t:"Moubadera",y:"Mubadera",a:"İnisiyatif",o:"Mubadera"},
+{n:1027,t:"Nizem",y:"Nizem",a:"Düzen",o:"Ni-zem"},
+{n:1028,t:"Fawdha",y:"Favdha",a:"Karışıklık / Kaos",o:"Favdha"},
+{n:1029,t:"Amena",y:"Amena",a:"Güvenli",o:"Amena"},
+{n:1030,t:"Khatir",y:"Hatir",a:"Tehlikeli",o:"Hatir"},
+{n:1031,t:"7adha",y:"Hadha",a:"Şanslı",o:"Hadha"},
+{n:1032,t:"Ma3ndouch zhar",y:"Maanduş zhar",a:"Şanssız",o:"Zhar"},
+{n:1033,t:"Taqdeer",y:"Takdir",a:"Kader / Takdir",o:"Takdir"},
+{n:1034,t:"Kidheb",y:"Kidheb",a:"Yalan",o:"Kidheb"},
+{n:1035,t:"S7i7",y:"Shih",a:"Doğru",o:"Shih"},
+{n:1036,t:"Nadhifi",y:"Nadhifi",a:"Temiz",o:"Nadhifi"},
+{n:1037,t:"Mratab",y:"Mratab",a:"Düzenli",o:"Mratab"},
+{n:1038,t:"3awedli",y:"Avedli",a:"Tekrarla bana",o:"Aved-li"},
+{n:1039,t:"Ma fhemtch",y:"Ma fhemtş",a:"Anlamadım",o:"Fhemtş"},
+{n:1040,t:"Sem3et?",y:"Smat?",a:"Duydun mu?",o:"Smat"},
+{n:1041,t:"Cheft?",y:"Şeft?",a:"Gördün mü?",o:"Şeft"},
+{n:1042,t:"3reft?",y:"Areft?",a:"Anladın mı?",o:"Areft"},
+{n:1043,t:"Chbiha hedhi",y:"Şbiha hedhi",a:"Nesi var bunun?",o:"Şbiha"},
+{n:1044,t:"Mech normal",y:"Meş normal",a:"Normal değil",o:"Normal"},
+{n:1045,t:"Bi soura 3ama",y:"Bi sura ama",a:"Genel olarak",o:"Sura"},
+{n:1046,t:"Bi soura khassa",y:"Bi sura hassa",a:"Özellikle",o:"Khassa"},
+{n:1047,t:"Ma3neha",y:"Maaneha",a:"Yani / Demek ki",o:"Maaneha"},
+{n:1048,t:"Maqsoud",y:"Maksud",a:"Kasıtlı",o:"Maksud"},
+{n:1049,t:"3ibara 3la",y:"İbara ala",a:"Hakkında / Sanki",o:"İbara"},
+{n:1050,t:"Besslema ya 7abibi",y:"Besslema ya habibi",a:"Hoşça kal sevgilim",o:"Besslema"}
+];
+
+// ===== CORE ENGINE =====
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.querySelectorAll('.topbar button').forEach(b => {
+    b.classList.remove('active');
+    if(b.getAttribute('onclick').includes(id)) b.classList.add('active');
+  });
+  window.scrollTo(0,0);
+}
+
+function speak(t, a) {
+  speechSynthesis.cancel();
+  let m1 = new SpeechSynthesisUtterance(t);
+  m1.lang = 'tr-TR'; m1.rate = 0.7; m1.pitch = 1.1;
+  let m2 = new SpeechSynthesisUtterance(a);
+  m2.lang = 'tr-TR'; m2.rate = 0.9;
+  speechSynthesis.speak(m1);
+  m1.onend = () => { setTimeout(() => speechSynthesis.speak(m2), 400); };
+}
+
+// SÖZLÜK RENDER
+function renderDict(data) {
+  const body = document.getElementById('dictBody');
+  body.innerHTML = data.map(k => `
+    <tr>
+      <td style="color:var(--accent); font-weight:bold;">${k.n}</td>
+      <td><b style="font-size:16px;">${k.t}</b></td>
+      <td style="color:var(--green)">${k.a}</td>
+      <td><small style="color:#888">${k.o}</small></td>
+      <td><button class="play-btn" onclick="speak('${k.y}','${k.a}')">▶</button></td>
+    </tr>
+  `).join('');
+}
+
+function search() {
+  const q = document.getElementById('searchInput').value.toLowerCase();
+  const filtered = K.filter(k => k.t.toLowerCase().includes(q) || k.a.toLowerCase().includes(q) || k.o.toLowerCase().includes(q));
+  renderDict(filtered);
+}
+
+// FLASHCARD
+function makeCards() {
+  const s = parseInt(document.getElementById('fcS').value);
+  const e = parseInt(document.getElementById('fcE').value);
+  const area = document.getElementById('fcArea');
+  const filtered = K.filter(k => k.n >= s && k.n <= e);
+  
+  area.innerHTML = filtered.map(k => `
+    <div class="fc-card" onclick="this.classList.toggle('flipped')">
+      <div class="fc-inner">
+        <div class="fc-front">
+          <span style="position:absolute; top:10px; left:15px; font-size:10px; color:var(--accent);">#${k.n}</span>
+          ${k.t}
+          <button style="margin-top:15px; background:none; border:none; color:white; font-size:20px;" onclick="event.stopPropagation(); speak('${k.y}','${k.a}')">🔊</button>
+        </div>
+        <div class="fc-back">
+          <div style="font-size:18px;">${k.a}</div>
+          <div style="font-size:12px; margin-top:10px; opacity:0.8;">(${k.o})</div>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+// QUIZ
+let cq;
+function loadQ() {
+  cq = K[Math.floor(Math.random() * K.length)];
+  document.getElementById('qWord').textContent = cq.t;
+  document.getElementById('qInp').value = "";
+  document.getElementById('qFeedback').textContent = "";
+  document.getElementById('qNum').textContent = "Kategori: Sousse Genel | No: " + cq.n;
+}
+
+function checkQ() {
+  const user = document.getElementById('qInp').value.trim().toLowerCase();
+  const correct = cq.a.toLowerCase();
+  const f = document.getElementById('qFeedback');
+  if(correct.includes(user) && user.length > 1) {
+    f.textContent = "TEBRİKLER! ✅"; f.style.color = var(--green);
+    speak(cq.y, cq.a);
+  } else {
+    f.textContent = "YANLIŞ! Doğrusu: " + cq.a; f.style.color = var(--accent);
+  }
+}
+
+// AUDIO MODU
+let aIdx = 0;
+let aTimer;
+function audioPlay() {
+  audioStop();
+  aTimer = setInterval(() => {
+    const k = K[aIdx];
+    document.getElementById('aDisp').textContent = k.t;
+    document.getElementById('aMean').textContent = k.a;
+    speak(k.y, k.a);
+    aIdx = (aIdx + 1) % K.length;
+  }, 5000);
+}
+function audioStop() { clearInterval(aTimer); }
+
+// EXCEL
+function dlExcel() {
+  let csv = "No;Tunusca;Turkce;Okunus\n";
+  K.forEach(k => { csv += `${k.n};${k.t};${k.a};${k.o}\n`; });
+  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+  const link = document.createElement("a");
+  link.href = URL.createObjectURL(blob);
+  link.setAttribute("download", "Tunus_Sousse_Sozluk.csv");
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+}
+
+// INIT
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('sw.js').then(reg => console.log('PWA Hazır.')).catch(err => console.log('Hata.'));
+}
+renderDict(K);
+loadQ();
+</script>
+
+</body>
+</html>
